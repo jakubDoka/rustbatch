@@ -1,5 +1,5 @@
 [package]
-name = "rustbatch"
+name = "procedures"
 version = "0.1.0"
 authors = ["jakub <mlokogegelmlok@gmail.com>"]
 edition = "2018"
@@ -7,9 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sdl2 = "0.34.2"
-gl = "0.14.0"
-glm = "0.2.3"
-image = "0.23.9"
-num-traits = "0.2.12"
-glutin = "0.24"
+
+[lib]
+proc-macro = true
