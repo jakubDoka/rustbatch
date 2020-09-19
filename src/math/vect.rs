@@ -1,8 +1,32 @@
-use std::convert::TryInto;
-use std::f32::consts::PI;
 use std::ops;
 
-use num_traits::Num;
+macro_rules! vec_from {
+    ($arg:ident) => {
+        handle!($arg);
+    };
+
+    ($arg:ident, $($args:ident),+) => (
+        handle!($arg);
+        vec_from!($($args),+);
+    );
+}
+
+macro_rules! handle {
+    ($arg:ident) => {
+        handle!($arg; $arg);
+    };
+
+    ($name:ident; $type:ty) => {
+        #[inline]
+        pub fn $name(x: $type, y: $type) -> Vect {
+            Vect{x: x as f32, y: y as f32}
+        }
+    };
+
+
+
+
+}
 
 #[derive(Copy, Clone, Debug)]
 pub struct Vect{
@@ -91,6 +115,8 @@ impl Vect{
     pub fn inverted(&self) -> Vect {
         Vect{x: -self.x, y: -self.y}
     }
+
+    vec_from!(u8, u16, u32, u64, i8, i16, i32, i64, i128, f64);
  }
 
 impl std::cmp::PartialEq for Vect {

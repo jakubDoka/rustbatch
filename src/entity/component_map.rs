@@ -7,7 +7,7 @@ pub struct ComponentMap<V, K: IDType = u64> {
     inner: HashMap<K, V, FastHash>
 }
 
-impl<K: IDType, V> Deref for ComponentMap<K, V> {
+impl<V, K: IDType> Deref for ComponentMap<V, K> {
     type Target = HashMap<K, V, FastHash>;
 
     fn deref(&self) -> &Self::Target {
@@ -15,7 +15,7 @@ impl<K: IDType, V> Deref for ComponentMap<K, V> {
     }
 }
 
-impl<K: IDType, V> DerefMut for ComponentMap<K, V> {
+impl<V, K: IDType> DerefMut for ComponentMap<V, K> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.inner
     }

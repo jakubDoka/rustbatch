@@ -1,7 +1,3 @@
-use sdl2::pixels::Color;
-
-use crate::render::program::Program;
-use crate::render::texture::Texture;
 
 pub struct Buffer {
     vbo: gl::types::GLuint,

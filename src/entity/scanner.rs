@@ -1,9 +1,7 @@
 use crate::math::rect::Rect;
 use crate::math::vect::Vect;
-use std::cell::RefCell;
-use std::iter::{Map, FromIterator};
-use std::collections::{HashMap, HashSet};
-use std::hash::{Hasher, BuildHasher, BuildHasherDefault, Hash};
+use std::collections::HashSet;
+use std::hash::BuildHasherDefault;
 use hashers::fnv::FNV1aHasher32;
 use crate::entity::id_generator::IDType;
 use crate::entity::{FastHash};
@@ -70,21 +68,20 @@ impl<T: IDType> Scanner<T> {
     }
 
     #[inline]
-    pub fn query(&self, rect: &Rect) -> Vec<T> {
+    pub fn query(&self, rect: &Rect, collector: &mut Vec<T>) {
         let mut min = self.get_coord(&rect.min);
         let mut max = self.get_coord(&rect.max);
-        min = (clamp(min.0-1, 0, self.w-1),clamp(min.1-1, 0, self.h-1));
+        min = (
+            if min.0 == 0 {0} else {clamp(min.0-1, 0, self.w-1)},
+            if min.1 == 0 {0} else {clamp(min.1-1, 0, self.h-1)}
+        );
         max = (clamp(max.0+2, 0, self.w-1),clamp(max.1+2, 0, self.h-1));
-
-        let mut collector = Vec::new();
 
         for y in min.1..max.1 {
             for x in min.0..max.0 {
                 collector.extend(&self.map[y][x]);
             }
         }
-
-        collector
     }
 
     pub fn get_shape_count(&self) -> usize {

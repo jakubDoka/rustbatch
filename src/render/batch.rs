@@ -1,5 +1,4 @@
 use crate::math::mat;
-use crate::math::vect::Vect;
 use crate::render::program::Program;
 use crate::render::texture::Texture;
 

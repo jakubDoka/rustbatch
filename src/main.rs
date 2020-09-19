@@ -1,34 +1,40 @@
-
-
 #![allow(dead_code)]
 mod entity;
 mod render;
-
+mod debug;
 
 extern crate gl;
 extern crate glm;
 extern crate sdl2;
 
-use std::f32::consts::PI;
-use std::ffi::CString;
-use std::sync::Arc;
-
-use image::GenericImageView;
 use rand::Rng;
-use sdl2::VideoSubsystem;
 
 use math::vect::Vect;
 
-use crate::batch::Batch;
-use crate::buffer::Buffer;
-use crate::math::{mat, rgba, vect};
-use render::sprite::Sprite;
+use crate::math::vect;
 use render::window::Window;
 use render::texture;
+use crate::render::batch::Batch;
+use crate::debug::FPS;
+use crate::entity::scanner::Scanner;
+use crate::math::rect::Rect;
+use crate::entity::id_generator::IDGenerator;
 
 mod math;
-mod batch;
-mod buffer;
+
+struct Body {
+    id: u64,
+    pos: Vect,
+    prev_pos: Vect,
+    vel: Vect,
+}
+
+impl Body {
+    pub fn step(&mut self, delta: f32) {
+        self.prev_pos = self.pos;
+        self.pos += self.vel * delta;
+    }
+}
 
 fn main() {
     let sdl = sdl2::init().unwrap();
@@ -41,42 +47,49 @@ fn main() {
         .build()
         .unwrap();
 
-    let _gl_context = window.gl_create_context().unwrap();
 
 
-    Window::init(&window, &video_subsystem);
+    let gl_context = window.gl_create_context().unwrap();
+
+
+    Window::init(&window, &gl_context, &video_subsystem);
 
     let mut window = Window::new(window);
-
     let texture = texture::Texture::new(
         "C:/Users/jakub/Documents/programming/rust/src/rustbatch/src/icon.png",
         gl::NEAREST,
         gl::RGBA
     ).unwrap();
 
-    let mut sprite = Sprite::new(texture.frame());
+    //let mut sprite = Sprite::new(texture.frame());
 
     let mut batch = Batch::new(texture);
 
+    let mut bodies = Vec::new();
+
+    let mut map = Scanner::new(1000, 1000, Vect::i32(50, 50));
+
     let mut rng = rand::thread_rng();
+    let mut gen = IDGenerator::new();
 
-    let mut poss = [mat::IM; 10000];
+    for _ in 0..10000 {
+        let b = Body{
+            pos: Vect::new(rng.gen::<f32>() * 2000f32, rng.gen::<f32>() * 2000f32),
+            vel: Vect::new(rng.gen::<f32>() * 300f32, rng.gen::<f32>() * 300f32),
+            id: gen.gen(),
+            prev_pos: vect::ZERO,
+        };
 
-    for i in 0..10000 {
-        let x: f32 = rng.gen();
-        let y: f32 = rng.gen();
-        let r: f32 = rng.gen();
-        poss[i] = mat::IM.rotated(vect::ZERO, r * 10f32).moved(Vect::new(500f32*x, 500f32*y));
+        map.insert(&b.pos, b.id);
+
+        bodies.push(b);
     }
 
+    let mut collector = Vec::new();
 
-    //window.set_camera(mat::IM.scaled(vect::ZERO, 0.5f32));
-
-    let mut now = std::time::Instant::now();
-    let mut t = 0f32;
-    let mut f = 0i32;
-
+    let mut fps = FPS::new(1f32);
     let mut event_pump = sdl.event_pump().unwrap();
+
     'main: loop {
         for event in event_pump.poll_iter() {
             match event {
@@ -84,19 +97,17 @@ fn main() {
                 _ => {}
             }
         }
-        f += 1;
-        let delta = std::time::Instant::elapsed(&now).as_secs_f32();
-        t += delta;
-        now = std::time::Instant::now();
-        if t > 1f32 {
-            t = 0f32;
-            println!("{}", f);
-            f = 0;
+
+        let delta = fps.increase(0f32);
+
+        for b in bodies.iter_mut() {
+            b.step(delta);
+            map.update(&b.prev_pos, &b.pos, b.id);
+            map.query(&Rect::centered(b.pos, 50f32, 50f32), &mut collector);
+            collector.clear()
         }
 
-        for i in 0..10000 {
-            sprite.draw(&mut batch, &poss[i], &rgba::WHITE);
-        }
+
 
         window.clear();
 

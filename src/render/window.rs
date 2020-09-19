@@ -1,17 +1,15 @@
 extern crate sdl2;
 
 use std::ops::Deref;
-use std::process::exit;
-use std::sync::Mutex;
 
 use sdl2::{video, VideoSubsystem};
 
-use crate::batch::Batch;
-use crate::buffer::Buffer;
 use crate::math::mat;
 use crate::math::mat::Mat;
 use crate::math::vect::Vect;
-use crate::render::program::Program;
+use sdl2::video::GLContext;
+use crate::render::buffer::Buffer;
+use crate::render::batch::Batch;
 
 static mut INITED: bool = false;
 
@@ -31,7 +29,7 @@ impl Deref for Window {
 
 impl Window {
 
-    pub fn init(window: &video::Window, system: &VideoSubsystem) {
+    pub fn init(_: &video::Window, _: &GLContext, system: &VideoSubsystem) {
         unsafe {
             INITED = true;
         }

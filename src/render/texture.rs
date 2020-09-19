@@ -18,7 +18,6 @@ impl Texture {
         let img = image::open(path)?.flipv();
 
 
-
         Ok(Self::from_img(img, mode, color))
     }
 
@@ -47,7 +46,7 @@ impl Texture {
             gl::GenerateMipmap(gl::TEXTURE_2D);
         }
 
-        Texture{id, size: Vect::new(img.width() as f32, img.height() as f32), img }
+        Texture{id, size: Vect::u32(img.width() , img.height()), img }
     }
 
     pub fn size(&self) -> Vect {

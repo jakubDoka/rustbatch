@@ -1,5 +1,3 @@
-use std::ops::Mul;
-
 use crate::math::vect::Vect;
 
 pub static DEFAULT_VIEWPORT_MATRIX: glm::Mat4 = glm::Mat4{

@@ -1,22 +1,32 @@
-use image::Rgba;
-
-use crate::batch::Batch;
-use crate::buffer;
 use crate::math::mat::Mat;
 use crate::math::rect::Rect;
-use crate::math::rgba::RGBA;
 use crate::math::vect::Vect;
-use std::cell::RefCell;
+use crate::render::buffer;
+use crate::render::batch::Batch;
+use crate::math::rgba::RGBA;
 
 pub struct Sprite {
     loc_verts: [Vect; 4],
     verts: [Vect; 4],
+    radius: f32,
     trig_data: Vec<f32>,
     buff: [f32; buffer::DATA_SIZE],
 }
 
 pub const PATTERN: [u32; 6] = [0, 1, 3, 1, 2, 3];
 pub const VERTEX_COUNT: usize = 4;
+
+impl Clone for Sprite {
+    fn clone(&self) -> Self {
+       Sprite{
+           loc_verts: self.loc_verts.clone(),
+           verts: self.verts.clone(),
+           radius: self.radius.clone(),
+           trig_data: self.trig_data.clone(),
+           buff: self.buff.clone(),
+       }
+    }
+}
 
 impl Sprite {
     #[inline]
@@ -26,6 +36,7 @@ impl Sprite {
             verts: region.verts(),
             trig_data: Vec::with_capacity(buffer::DATA_SIZE * VERTEX_COUNT),
             buff: [0f32; buffer::DATA_SIZE],
+            radius: region.radius(),
         }
     }
 
