@@ -1,7 +1,8 @@
-use std::ops;
-use std::f32::consts::PI;
-use num_traits::Num;
 use std::convert::TryInto;
+use std::f32::consts::PI;
+use std::ops;
+
+use num_traits::Num;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Vect{
@@ -86,12 +87,14 @@ impl Vect{
         Vect{x:tr(self.x), y:tr(self.y)}
     }
 
+    #[inline]
     pub fn inverted(&self) -> Vect {
         Vect{x: -self.x, y: -self.y}
     }
  }
 
 impl std::cmp::PartialEq for Vect {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.x == other.x && self.y == other.y
     }

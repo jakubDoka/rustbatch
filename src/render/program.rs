@@ -1,17 +1,15 @@
+extern crate gl;
+
 use std;
 use std::ffi::{CStr, CString};
 use std::fs;
-use crate::mat::Mat;
-use crate::vect::Vect;
 
-extern crate gl;
+use crate::math::mat::Mat;
+use crate::math::vect::Vect;
+
 
 pub struct Program {
     id: gl::types::GLuint,
-}
-
-pub fn detach() {
-    unsafe { gl::UseProgram(0); }
 }
 
 impl Program {
@@ -85,14 +83,12 @@ impl Program {
             out vec2 region;\n
             out vec4 color;\n\n
 
-            uniform mat4 transform;\n
             uniform mat4 camera;\n
             uniform vec2 texture_size;\n
             uniform vec2 view_size;\n\n
 
-
             void main(){\n
-            gl_Position = transform * camera * vec4(pos/view_size, 0.0, 1.0);\n
+            gl_Position = camera * vec4(pos/view_size, 0.0, 1.0);\n
             color = col;\n
             region = reg/texture_size;\n
             }").unwrap();
@@ -134,17 +130,11 @@ impl Program {
     pub fn set_mat4(&self, address: &str, mat: Mat) {
         self.set_used();
         unsafe { gl::UniformMatrix4fv(self.get_ptr(address), 1, gl::FALSE, &mat.to_glm_mat4().c0.x); }
-        detach()
     }
 
     pub fn set_vec2(&self ,address: &str, vec: Vect) {
         self.set_used();
         unsafe { gl::Uniform2f(self.get_ptr(address), vec.x, vec.y); }
-        detach();
-    }
-
-    pub fn set_transform_matrix(&self, mat: Mat) {
-        self.set_mat4("transform", mat);
     }
 
     pub fn set_camera(&self, mat: Mat) {
@@ -152,7 +142,7 @@ impl Program {
     }
 
     pub fn set_view_size(&self, vec: Vect) {
-        self.set_vec2("view_size", vec);
+        self.set_vec2("view_size", vec/2f32);
     }
 
     pub fn set_texture_size(&self, vec: Vect) {

@@ -1,3 +1,7 @@
+use sdl2::pixels::Color;
+
+use crate::render::program::Program;
+use crate::render::texture::Texture;
 
 pub struct Buffer {
     vbo: gl::types::GLuint,
@@ -5,13 +9,33 @@ pub struct Buffer {
     vao: gl::types::GLuint,
 }
 
-pub fn detach() {
-    unsafe {
-        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, 0);
-        gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-        gl::BindVertexArray(0);
+pub struct VertexProperties {
+    pub size: i32,
+    pub offset: usize,
+    pub location: u32,
+}
+
+impl VertexProperties {
+    fn apply(&self) {
+        unsafe {
+            gl::EnableVertexAttribArray(self.location);
+            gl::VertexAttribPointer(
+                self.location,
+                self.size,
+                gl::FLOAT,
+                gl::FALSE,
+                (DATA_SIZE * std::mem::size_of::<f32>()) as gl::types::GLint,
+                (self.offset * std::mem::size_of::<f32>()) as *const gl::types::GLvoid,
+            );
+        }
     }
 }
+
+
+pub const POSITION: VertexProperties = VertexProperties{size: 2, location: 0, offset: 0};
+pub const TEXTURE_REGION: VertexProperties = VertexProperties{size: 2, location: 1, offset: 2};
+pub const COLOR: VertexProperties = VertexProperties{size: 4, location: 2, offset: 4};
+pub const DATA_SIZE: usize = (POSITION.size + TEXTURE_REGION.size + COLOR.size) as usize;
 
 impl Buffer {
     pub fn new() -> Self {
@@ -33,39 +57,12 @@ impl Buffer {
 
         unsafe {
             gl::BindBuffer(gl::ARRAY_BUFFER, self.vbo);
-
-            gl::EnableVertexAttribArray(0);
-            gl::VertexAttribPointer(
-                0,
-                2,
-                gl::FLOAT,
-                gl::FALSE,
-                (8 * std::mem::size_of::<f32>()) as gl::types::GLint,
-                std::ptr::null(),
-            );
-
-            gl::EnableVertexAttribArray(1);
-            gl::VertexAttribPointer(
-                1,
-                2,
-                gl::FLOAT,
-                gl::FALSE,
-                (8 * std::mem::size_of::<f32>()) as gl::types::GLint,
-                (2 * std::mem::size_of::<f32>()) as *const gl::types::GLvoid,
-            );
-
-            gl::EnableVertexAttribArray(2);
-            gl::VertexAttribPointer(
-                2,
-                4,
-                gl::FLOAT,
-                gl::FALSE,
-                (8 * std::mem::size_of::<f32>()) as gl::types::GLint,
-                (4 * std::mem::size_of::<f32>()) as *const gl::types::GLvoid,
-            );
         }
+            POSITION.apply();
 
-        detach();
+            TEXTURE_REGION.apply();
+
+            COLOR.apply();
 
         self
     }
@@ -100,14 +97,12 @@ impl Buffer {
                 gl::STATIC_DRAW
             );
         }
-
-        detach()
     }
 
-    pub fn draw(&self) {
+    pub fn draw(&self, amount: usize) {
         unsafe {
             gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, self.ebo);
-            gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, std::ptr::null());
+            gl::DrawElements(gl::TRIANGLES, amount as i32, gl::UNSIGNED_INT, std::ptr::null());
         }
     }
 }

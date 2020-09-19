@@ -1,5 +1,6 @@
-use crate::vect::Vect;
 use std::ops::Mul;
+
+use crate::math::vect::Vect;
 
 pub static DEFAULT_VIEWPORT_MATRIX: glm::Mat4 = glm::Mat4{
     c0: glm::Vec4{x: 1f32, y: 0f32, z: 0f32, w: 0f32},
@@ -8,20 +9,23 @@ pub static DEFAULT_VIEWPORT_MATRIX: glm::Mat4 = glm::Mat4{
     c3: glm::Vec4{x: -1f32, y: -1f32, z: 0f32, w: 1f32},
 };
 
-pub static IM: Mat = Mat{c: [1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
+pub static IM: Mat = Mat{ c:[1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
+pub static ZM: Mat = Mat{ c:[0f32; 6]};
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone)]
 pub struct Mat {
-    c: [f32; 6]
+    pub c: [f32; 6],
 }
 
 impl Mat {
+    #[inline]
     pub fn new(pos: Vect, scl: Vect, rot: f32) -> Mat {
         let s = rot.sin();
         let c = rot.cos();
-        Mat { c: [c * scl.x, s * scl.x, c * scl.y, s * scl.y, pos.x, pos.y] }
+        Mat{ c: [c * scl.x, s * scl.x, c * scl.y, s * scl.y, pos.x, pos.y] }
     }
 
+    #[inline]
     pub fn to_glm_mat4(&self) -> glm::Mat4 {
         return glm::Mat4::new(
             glm::Vec4::new(self.c[0], self.c[1], 0f32, 0f32),
@@ -31,38 +35,50 @@ impl Mat {
         )
     }
 
-    pub fn xax(&self) -> Vect {
+    #[inline]
+    pub fn x_axis(&self) -> Vect {
         Vect::new(self.c[0], self.c[1])
     }
 
-    pub fn yax(&self) -> Vect {
+    #[inline]
+    pub fn y_axis(&self) -> Vect {
         Vect::new(self.c[2], self.c[3])
     }
 
-    pub fn org(&self) -> Vect {
+    #[inline]
+    pub fn origin(&self) -> Vect {
         Vect::new(self.c[4], self.c[5])
     }
 
+    #[inline]
+    pub fn decompose(&self) -> [Vect; 3] {
+        [self.x_axis(), self.y_axis(), self.origin()]
+    }
+
+    #[inline]
+    pub fn scale_origin_xy(mut self, view: Vect) -> Mat {
+        self.c[4] *= view.x;
+        self.c[5] *= view.y;
+
+        self
+    }
+
+
     // Moved moves everything by the delta vector.
+    #[inline]
     pub fn moved(mut self, delta: Vect) -> Mat {
         self.mv(delta);
         self
     }
 
     // Moved moves everything by the delta vector.
+    #[inline]
     pub fn mv(&mut self, delta: Vect) {
         self.c[4] += delta.x;
         self.c[5] += delta.y;
     }
 
-    pub fn scl_a_xy(mut self, around: Vect, scl: Vect) -> Mat {
-        self.mv(around.inverted());
-        self.sxy(scl);
-        self.mv(around);
-
-        self
-    }
-
+    #[inline]
     pub fn sxy(&mut self, scl: Vect) {
         self.c[0] *= scl.x;
         self.c[1] *= scl.y;
@@ -72,51 +88,53 @@ impl Mat {
         self.c[5] *= scl.y;
     }
 
-    pub fn scl(mut self ,scl: f32) -> Mat {
-        let pos = self.org();
-        self.mv(pos.inverted());
-        self.sxy(Vect::new(scl, scl));
-        self.mv(pos);
-
-        self
-    }
-
-    pub fn scl_a(mut self, around: Vect, scl: f32) -> Mat {
-        self.scl_a_xy(around, Vect::new(scl, scl))
-    }
-
-    pub fn rot_a(mut self, around: Vect, ang: f32) -> Mat {
+    pub fn scaled_xy(mut self, around: Vect, scl: Vect) -> Mat {
         self.mv(around.inverted());
-        self.rt(ang);
+        self.sxy(scl);
         self.mv(around);
 
         self
     }
 
-    pub fn rt(&mut self, ang: f32) {
-        let c = ang.cos();
-        let s = ang.sin();
-        self.chn(Mat { c: [c, s, -s, c, 0f32, 0f32] })
-    }
+    pub fn scaled(mut self, around: Vect, scl: f32) -> Mat {
+        self.mv(around.inverted());
+        self.sxy( Vect::new(scl, scl));
+        self.mv(around);
 
-    pub fn chained(mut self, o: Mat) -> Mat {
-        self.chn(o);
         self
     }
 
-    pub fn chn(&mut self, o: Mat) {
-        self.c[0] = o.c[0] * self.c[0] + o.c[2] * self.c[1];
-        self.c[1] = o.c[1] * self.c[0] + o.c[3] * self.c[1];
-        self.c[2] = o.c[0] * self.c[2] + o.c[2] * self.c[3];
-        self.c[3] = o.c[1] * self.c[2] + o.c[3] * self.c[3];
-        self.c[4] = o.c[0] * self.c[4] + o.c[2] * self.c[5] + o.c[4];
-        self.c[5] = o.c[1] * self.c[4] + o.c[3] * self.c[5] + o.c[5];
+    pub fn rotated(mut self, around: Vect, ang: f32) -> Mat {
+        self.mv(around.inverted());
+
+        let c = ang.cos();
+        let s = ang.sin();
+        self = self.chained(&Mat{c:[c, s, -s, c, 0f32, 0f32]});
+
+        self.mv(around);
+
+        self
     }
 
+    #[inline]
+    pub fn chained(&self, o: &Mat) -> Mat {
+        let mut chained = ZM.clone();
+        chained.c[0] = o.c[0] * self.c[0] + o.c[2] * self.c[1];
+        chained.c[1] = o.c[1] * self.c[0] + o.c[3] * self.c[1];
+        chained.c[2] = o.c[0] * self.c[2] + o.c[2] * self.c[3];
+        chained.c[3] = o.c[1] * self.c[2] + o.c[3] * self.c[3];
+        chained.c[4] = o.c[0] * self.c[4] + o.c[2] * self.c[5] + o.c[4];
+        chained.c[5] = o.c[1] * self.c[4] + o.c[3] * self.c[5] + o.c[5];
+
+        chained
+    }
+
+    #[inline]
     pub fn prj(&self, u: Vect) -> Vect {
         Vect::new(self.c[0] * u.x + self.c[2] * u.y + self.c[4], self.c[1] * u.x + self.c[3] * u.y + self.c[5])
     }
 
+    #[inline]
     pub fn unprj(&self, u: Vect) -> Vect {
         let det = self.c[0] * self.c[3] - self.c[2] * self.c[1];
         Vect::new(
@@ -129,8 +147,9 @@ impl Mat {
 #[cfg(test)]
 mod tests {
     use std::f32::consts::PI;
-    use crate::vect::*;
-    use crate::vect;
+
+    use crate::math::{mat, vect};
+    use crate::math::vect::*;
 
     fn round(a: f32, decimals: i32) -> f32 {
         let mul = 10f32.powi(decimals);

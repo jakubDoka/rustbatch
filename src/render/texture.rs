@@ -1,5 +1,7 @@
-use image::{GenericImageView, ImageError, DynamicImage};
-use crate::vect::Vect;
+use image::{DynamicImage, GenericImageView, ImageError};
+
+use crate::math::rect::Rect;
+use crate::math::vect::Vect;
 
 pub struct Texture {
     id: gl::types::GLuint,
@@ -50,6 +52,10 @@ impl Texture {
 
     pub fn size(&self) -> Vect {
         self.size
+    }
+
+    pub fn frame(&self) -> Rect {
+        Rect::from_vec(self.size)
     }
 
     pub fn id(&self) -> gl::types::GLuint {
