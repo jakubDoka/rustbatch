@@ -1,7 +1,7 @@
 use std::time::Instant;
 
 pub struct FPS {
-    counter: u16,
+    counter: u32,
     timeout: f32,
     time: f32,
     last: Instant,
@@ -9,7 +9,7 @@ pub struct FPS {
 
 impl FPS {
     pub fn new(timeout: f32) -> Self {
-        FPS{counter: 0u16, timeout, time: 0f32, last: Instant::now()}
+        FPS{counter: 0u32, timeout, time: 0f32, last: Instant::now()}
     }
 
     pub fn increase(&mut self, mut delta: f32) -> f32 {

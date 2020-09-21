@@ -5,20 +5,81 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfe918c4-650d-4cde-a8d7-a96b6897f532" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/debug/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/jakub.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/jakub.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/181lrrj1l5enxze2.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/1kfirlo1985niwhx.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/1l08xc32llnbr3dr.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/1lq20n6yzkqv6pj8.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/1n3ph9f20dqe3wf5.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/1x9amb28oer68fcz.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/27taf4ktolnat32x.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/283x0v81w03m3d0b.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2dpaf0qt8m4o1taa.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2ha5d5y8bbiiunv9.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2i9f43xdlccwpgwp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2jx442keq7htv6bk.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2l144xbpea5s7rx0.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2p6f512c6wyv6xug.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/2pqvusq0mraot2r5.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/37sykzi8fk560m4h.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/3ice55ahsy0w5eog.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/3m3uugn0pt8dqfud.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/3mtib52zrajwpz85.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/3zryggtrtg5wnugq.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/4526fz1lm8ewn8nm.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/46cxthljb5djgjqa.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/49mifrnk2kicn2lg.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/514sbnpqt39d9w9h.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/563thcllfiwyuptc.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/56anrag507olxczv.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/596p0lirf3pydbpw.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/59xleakh02757ovw.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/dep-graph.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/fs7xnpbncaw5ps8.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/lxa4kdqmlr193j7.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/nndxr1c60tymb0j.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/query-cache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/vn5gk7wsfmuq50a.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/work-products.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf-6zkomkp0lbgp/zpx0r6er1dkn60l.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frdcowk75f-iu1fuf.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frdcspqj0y-vfvl5t-2z44t9qm86dxn/dep-graph.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frdcspqj0y-vfvl5t-2z44t9qm86dxn/query-cache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frdcspqj0y-vfvl5t-2z44t9qm86dxn/work-products.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frdcspqj0y-vfvl5t.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/entity/pathfinder.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/component_map.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/component_map.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/.fingerprint/tests-02eee63dfa31064d/output-bin-tests" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/target/debug/.fingerprint/tests-02eee63dfa31064d/output-bin-tests" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/.fingerprint/tests-252d83d8e6387115/output-bin-tests" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/target/debug/.fingerprint/tests-252d83d8e6387115/output-bin-tests" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/deps/tests.exe" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/target/debug/deps/tests.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/deps/tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/target/debug/deps/tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/1kfirlo1985niwhx.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/1l08xc32llnbr3dr.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/27taf4ktolnat32x.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/2h8h1pewg3z2mpzm.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/2jx442keq7htv6bk.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/3m3uugn0pt8dqfud.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/3mtib52zrajwpz85.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/514sbnpqt39d9w9h.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/563thcllfiwyuptc.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/586cy01l94f6mbqy.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/596p0lirf3pydbpw.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/dep-graph.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/fs7xnpbncaw5ps8.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/query-cache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx-1z4fksd7d5vw4/work-products.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-2zynxmsvm7lc4/s-frbxxmeybo-vq1qkx.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frby2ndjwi-ug8b4q-gx1gvmcmz1hr/dep-graph.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frby2ndjwi-ug8b4q-gx1gvmcmz1hr/query-cache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frby2ndjwi-ug8b4q-gx1gvmcmz1hr/work-products.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/incremental/tests-e433m4dxq1st/s-frby2ndjwi-ug8b4q.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/tests.exe" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/target/debug/tests.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tests/target/debug/tests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tests/target/debug/tests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/debug/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/debug/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/scanner.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/scanner.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/mat.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/mat.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/math/rect.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/rect.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/vect.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/vect.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/render/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/render/sprite.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/sprite.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/render/texture.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/texture.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/render/window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +111,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ggl" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
     <property name="org.rust.disableDetachedFileInspectionC:/Users/jakub/Documents/programming/rust/src/rustbatch/build.rs" value="true" />
     <property name="org.rust.disableDetachedFileInspectionC:/Users/jakub/Documents/programming/rust/src/rustbatch/lib/tests/src/main.rs" value="true" />
@@ -68,34 +129,34 @@
       <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch" />
     </key>
   </component>
-  <component name="RunManager" selected="Cargo Command.Test scanner::tests">
+  <component name="RunManager" selected="Cargo Command.Test entity::pathfinder2::tests::update_test">
+    <configuration name="Test entity::pathfinder2::tests::update_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="channel" value="DEFAULT" />
+      <option name="command" value="test --package rustbatch --bin rustbatch entity::pathfinder2::tests::update_test -- --exact" />
+      <option name="allFeatures" value="false" />
+      <option name="emulateTerminal" value="false" />
+      <option name="backtrace" value="SHORT" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test entity::pathfinder::tests::map_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="channel" value="DEFAULT" />
+      <option name="command" value="test --package rustbatch --bin rustbatch entity::pathfinder::tests::map_test -- --exact" />
+      <option name="allFeatures" value="false" />
+      <option name="emulateTerminal" value="false" />
+      <option name="backtrace" value="SHORT" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test entity::scanner::tests::remove_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
       <option name="command" value="test --package rustbatch --bin rustbatch entity::scanner::tests::remove_test -- --exact" />
-      <option name="allFeatures" value="false" />
-      <option name="emulateTerminal" value="false" />
-      <option name="backtrace" value="SHORT" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
-      <envs />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test math::rect::tests::intersects_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="channel" value="DEFAULT" />
-      <option name="command" value="test --package rustbatch --bin rustbatch math::rect::tests::intersects_test -- --exact" />
-      <option name="allFeatures" value="false" />
-      <option name="emulateTerminal" value="false" />
-      <option name="backtrace" value="SHORT" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
-      <envs />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test math::scanner::tests::insert_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="channel" value="DEFAULT" />
-      <option name="command" value="test --package rustbatch --bin rustbatch math::scanner::tests::insert_test -- --exact" />
       <option name="allFeatures" value="false" />
       <option name="emulateTerminal" value="false" />
       <option name="backtrace" value="SHORT" />
@@ -131,11 +192,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo Command.Test entity::pathfinder2::tests::update_test" />
+        <item itemvalue="Cargo Command.Test entity::pathfinder::tests::map_test" />
         <item itemvalue="Cargo Command.Test scanner::tests" />
         <item itemvalue="Cargo Command.Test entity::scanner::tests::remove_test" />
         <item itemvalue="Cargo Command.Test math::scanner::tests::remove_test" />
-        <item itemvalue="Cargo Command.Test math::scanner::tests::insert_test" />
-        <item itemvalue="Cargo Command.Test math::rect::tests::intersects_test" />
       </list>
     </recent_temporary>
   </component>
@@ -164,30 +225,34 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="447" y="171" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.738@0.0.1366.738" timestamp="1600160580571" />
-    <state x="488" y="85" key="#com.intellij.ide.util.MemberChooser" timestamp="1600544278720">
+    <state x="488" y="85" key="#com.intellij.ide.util.MemberChooser" timestamp="1600617181082">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="488" y="85" key="#com.intellij.ide.util.MemberChooser/0.0.1366.738@0.0.1366.738" timestamp="1600544278720" />
-    <state x="413" y="116" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600274603728">
+    <state x="488" y="85" key="#com.intellij.ide.util.MemberChooser/0.0.1366.738@0.0.1366.738" timestamp="1600617181082" />
+    <state x="413" y="116" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600697371704">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="413" y="116" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.738@0.0.1366.738" timestamp="1600274603728" />
-    <state width="1323" height="144" key="GridCell.Tab.0.bottom" timestamp="1600526133342">
+    <state x="413" y="116" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.738@0.0.1366.738" timestamp="1600697371704" />
+    <state x="463" y="124" key="FileChooserDialogImpl" timestamp="1600688913052">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="144" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1600526133342" />
-    <state width="1323" height="144" key="GridCell.Tab.0.center" timestamp="1600526133341">
+    <state x="463" y="124" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1600688913052" />
+    <state width="1323" height="270" key="GridCell.Tab.0.bottom" timestamp="1600694493302">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="144" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1600526133341" />
-    <state width="1323" height="144" key="GridCell.Tab.0.left" timestamp="1600526133341">
+    <state width="1323" height="270" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1600694493302" />
+    <state width="1323" height="270" key="GridCell.Tab.0.center" timestamp="1600694493302">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="144" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1600526133341" />
-    <state width="1323" height="144" key="GridCell.Tab.0.right" timestamp="1600526133342">
+    <state width="1323" height="270" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1600694493302" />
+    <state width="1323" height="270" key="GridCell.Tab.0.left" timestamp="1600694493302">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="144" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1600526133342" />
+    <state width="1323" height="270" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1600694493302" />
+    <state width="1323" height="270" key="GridCell.Tab.0.right" timestamp="1600694493302">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state width="1323" height="270" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1600694493302" />
     <state x="492" y="283" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600160120328">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -200,9 +265,9 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="339" y="165" key="run.anything.popup/0.0.1366.738@0.0.1366.738" timestamp="1600456575126" />
-    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1600543811056">
+    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1600694386496">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738@0.0.1366.738" timestamp="1600543811056" />
+    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738@0.0.1366.738" timestamp="1600694386496" />
   </component>
 </project>

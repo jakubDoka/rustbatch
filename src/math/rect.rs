@@ -12,28 +12,28 @@ pub struct Rect {
 impl Rect {
     #[inline]
     pub fn new(x0: f32, y0: f32, x1: f32, y1: f32) -> Rect {
-        Rect{
-            min: Vect{x: x0, y: y0},
-            max: Vect{x: x1, y: y1},
+        Rect {
+            min: Vect { x: x0, y: y0 },
+            max: Vect { x: x1, y: y1 },
         }
     }
     #[inline]
     pub fn wh(x: f32, y: f32, w: f32, h: f32) -> Rect {
-        Rect{
-            min: Vect{x, y},
-            max: Vect{x: x + w, y: y + h},
+        Rect {
+            min: Vect { x, y },
+            max: Vect { x: x + w, y: y + h },
         }
     }
     #[inline]
     pub fn centered(c: Vect, w: f32, h: f32) -> Rect {
-        Rect{
-            min: Vect{x: c.x - w/2f32, y: c.y + h/2f32},
-            max: Vect{x: c.x + w/2f32, y: c.y + h/2f32},
+        Rect {
+            min: Vect { x: c.x - w / 2f32, y: c.y + h / 2f32 },
+            max: Vect { x: c.x + w / 2f32, y: c.y + h / 2f32 },
         }
     }
     #[inline]
     pub fn from_vec(v: Vect) -> Rect {
-        Rect{
+        Rect {
             min: vect::ZERO,
             max: v,
         }
@@ -42,9 +42,9 @@ impl Rect {
     pub fn verts(&self) -> [Vect; 4] {
         [
             self.min,
-            Vect{x: self.min.x, y: self.max.x},
+            Vect { x: self.min.x, y: self.max.y },
             self.max,
-            Vect{x: self.max.x, y: self.min.x}
+            Vect { x: self.max.x, y: self.min.y }
         ]
     }
     #[inline]
@@ -78,7 +78,7 @@ impl Rect {
     }
     #[inline]
     pub fn contains(&self, pos: Vect) -> bool {
-        self.max.x > pos.x && self.min.x < pos.x &&  self.max.y > pos.y && self.min.y < pos.y
+        self.max.x > pos.x && self.min.x < pos.x && self.max.y > pos.y && self.min.y < pos.y
     }
     #[inline]
     pub fn fits_in(&self, o: &Rect) -> bool {
@@ -86,12 +86,12 @@ impl Rect {
     }
     #[inline]
     pub fn radius(&self) -> f32 {
-        (self.max - self.max).len()/2f32
+        (self.max - self.max).len() / 2f32
     }
 
     #[inline]
     pub fn moved(&self, delta: Vect) -> Self {
-        Rect{
+        Rect {
             min: self.min + delta,
             max: self.max + delta,
         }
