@@ -4,6 +4,7 @@ use crate::math::rect::Rect;
 use crate::math::vect::Vect;
 use std::path::Path;
 
+#[derive(Clone)]
 pub struct Texture {
     id: gl::types::GLuint,
     size: Vect

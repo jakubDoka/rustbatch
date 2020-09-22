@@ -5,7 +5,7 @@ use std::fs;
 use std::path::Path;
 use crate::render::create_whitespace_cstring_with_len;
 
-/// Shader
+#[derive(Clone)]
 pub struct Shader {
     id: gl::types::GLuint,
 }

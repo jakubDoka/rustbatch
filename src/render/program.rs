@@ -9,7 +9,7 @@ use crate::math::vect::Vect;
 use crate::render::shader::Shader;
 use crate::render::create_whitespace_cstring_with_len;
 
-
+#[derive(Clone)]
 pub struct Program {
     id: gl::types::GLuint,
 }

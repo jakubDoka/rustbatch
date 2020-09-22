@@ -33,7 +33,7 @@ impl Deref for Window {
 impl Window {
 
     pub fn new<F: FnOnce(&VideoSubsystem) -> video::Window>(gen: F) -> (Window, EventPump, GLContext) {
-        Self::from_buffer(gen, || Buffer::new())
+        Self::from_buffer(gen, || Buffer::default())
     }
 
     pub fn from_buffer<F, B>(gen: F, buffer: B) -> (Window, EventPump, GLContext)

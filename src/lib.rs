@@ -17,8 +17,8 @@
 //!
 //!
 //!fn main() {
-//!    // creating window to draw to and event pump to read input
-//!    // just ignore gl here it cannot be dropped otherwise rendering will not work so just leave it be
+//!    // creating window to draw to and event pump to read input. Ignore
+//!    // gl var, it cannot be dropped otherwise rendering will not work so just leave it be
 //!    let (mut window, mut event_pump, gl) = Window::new(|sys| {
 //!        sys.window("rusty batch", 400, 400)
 //!            .opengl()
@@ -29,15 +29,12 @@
 //!
 //!    window.set_background_color(&[0.5f32, 0.5f32, 0.5f32, 1f32]); //gray background
 //!
-//!    // use of image crate to load image
-//!    let img = image::open("C:/Users/jakub/Documents/programming/rust/src/ggl/src/bullets.png").unwrap();
-//!
 //!    // This is wrapped opengl texture object
-//!    let texture = Texture::from_img(
-//!        &img,
-//!        gl::NEAREST, // So the pixels are drawn as they are
+//!    let texture = Texture::new(
+//!        "C:/Users/jakub/Documents/programming/rust/src/ggl/src/bullets.png",
+//!        gl::NEAREST, // So the pixels are drawn with no interpolation
 //!        gl::RGBA // Color structure, you would use gl::RGB if your texture does not have alpha channel
-//!    );
+//!    ).unwrap();
 //!
 //!    // Creating sprite. Notice that sprite is just collection of points and it cannot be directly
 //!    // drawn to window
@@ -83,6 +80,10 @@
 //!    }
 //!}
 //! ```
+//! # Warming
+//! Important thing to note is that some functions from render module are calling functions and
+//! using enums from gl crate. Functions has to be loaded first witch you achieve by creating
+//! window.
 pub mod images;
 pub mod entity;
 pub mod render;
