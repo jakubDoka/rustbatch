@@ -69,8 +69,8 @@ impl PathFinder {
 
 pub struct Data {
     costs: Vec<Vec<i32>>,
-    pub(crate) map: Mutex<Vec<Vec<i32>>>,
-    pub(crate) processor: Mutex<Processor>,
+    pub map: Mutex<Vec<Vec<i32>>>,
+    pub processor: Mutex<Processor>,
     size: (i32, i32),
 }
 
@@ -95,7 +95,7 @@ impl Data {
 pub struct Processor {
     terminator: Receiver<()>,
     workspace: Vec<Vec<i32>>,
-    pub(crate) frontier: Vec<(usize, usize)>,
+    pub frontier: Vec<(usize, usize)>,
     collector: Vec<(usize, usize)>,
 }
 
@@ -170,7 +170,7 @@ impl Processor {
 
 #[cfg(test)]
 mod tests {
-    use crate::entity::pathfinder2::{Processor, Data};
+    use crate::entity::pathfinder::{Processor, Data};
     use std::sync::mpsc::channel;
     use std::sync::Mutex;
 

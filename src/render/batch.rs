@@ -3,10 +3,10 @@ use crate::render::program::Program;
 use crate::render::texture::Texture;
 
 pub struct Batch {
-    pub(crate) vertices: Vec<f32>,
-    pub(crate) indices: Vec<u32>,
-    pub(crate) texture: Texture,
-    pub(crate) program: Program,
+    pub vertices: Vec<f32>,
+    pub indices: Vec<u32>,
+    pub texture: Texture,
+    pub program: Program,
 }
 
 impl Batch {
@@ -21,7 +21,7 @@ impl Batch {
         Batch{texture, program, vertices: Vec::new(), indices: Vec::new()}
     }
 
-    pub(crate) fn append(&mut self, data: &mut Vec<f32>, pattern: &mut Vec<u32>) {
+    pub fn append(&mut self, data: &mut Vec<f32>, pattern: &mut Vec<u32>) {
         let l = self.vertices.len();
 
         self.vertices.append(data);

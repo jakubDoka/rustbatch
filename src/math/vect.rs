@@ -241,7 +241,7 @@ mod tests {
     }
     #[test]
     fn rot_test() {
-        assert_eq!(super::LEFT.x,round(super::RIGHT.rot(PI).x, 8));
-        assert_eq!(super::LEFT.y,round(super::RIGHT.rot(PI).y, 8));
+        assert_eq!(super::LEFT.x,round(super::RIGHT.rot(PI).x, 6));
+        assert_eq!(super::LEFT.y,round(super::RIGHT.rot(PI).y, 6));
     }
 }

@@ -2,10 +2,10 @@ use image::{DynamicImage, GenericImageView, ImageError};
 
 use crate::math::rect::Rect;
 use crate::math::vect::Vect;
+use std::path::Path;
 
 pub struct Texture {
     id: gl::types::GLuint,
-    img: DynamicImage,
     size: Vect
 }
 
@@ -14,14 +14,14 @@ impl Texture {
         Self::new(path, gl::NEAREST, gl::RGBA)
     }
 
-    pub fn new(path: &str, mode: gl::types::GLenum, color: gl::types::GLenum) -> Result<Texture, ImageError> {
+    pub fn new<P: AsRef<Path>>(path: P, mode: gl::types::GLenum, color: gl::types::GLenum) -> Result<Texture, ImageError> {
         let img = image::open(path)?.flipv();
 
 
-        Ok(Self::from_img(img, mode, color))
+        Ok(Self::from_img(&img, mode, color))
     }
 
-    pub fn from_img(img: DynamicImage ,mode: gl::types::GLenum, color: gl::types::GLenum) -> Texture {
+    pub fn from_img(img: &DynamicImage ,mode: gl::types::GLenum, color: gl::types::GLenum) -> Texture {
         let mut id: gl::types::GLuint = 0;
 
         unsafe {
@@ -46,7 +46,7 @@ impl Texture {
             gl::GenerateMipmap(gl::TEXTURE_2D);
         }
 
-        Texture{id, size: Vect::u32(img.width() , img.height()), img }
+        Texture{id, size: Vect::u32(img.width() , img.height()) }
     }
 
     pub fn size(&self) -> Vect {
