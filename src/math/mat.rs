@@ -86,6 +86,7 @@ impl Mat {
         self.c[5] *= scl.y;
     }
 
+    #[inline]
     pub fn scaled_xy(mut self, around: Vect, scl: Vect) -> Mat {
         self.mv(around.inverted());
         self.sxy(scl);
@@ -94,6 +95,7 @@ impl Mat {
         self
     }
 
+    #[inline]
     pub fn scaled(mut self, around: Vect, scl: f32) -> Mat {
         self.mv(around.inverted());
         self.sxy( Vect::new(scl, scl));
@@ -102,6 +104,7 @@ impl Mat {
         self
     }
 
+    #[inline]
     pub fn rotated(mut self, around: Vect, ang: f32) -> Mat {
         self.mv(around.inverted());
 
