@@ -5,6 +5,10 @@ use crate::render::buffer;
 use crate::render::batch::Batch;
 use crate::math::rgba::RGBA;
 
+/// Sprite is used for drawing images to batch
+/// It does not contain any heavy image data.
+/// if you check size of sprite its not horribly big and copying it is only right approach
+/// its a trade of - copying is slower in order to make drawing faster
 pub struct Sprite {
     loc_verts: [Vect; 4],
     verts: [Vect; 4],
@@ -29,6 +33,8 @@ impl Clone for Sprite {
 }
 
 impl Sprite {
+    /// new returns new sprite. rect is a texture region of texture in sprite-sheet
+    /// so if you are not using sprite-sheet just pass a bounding rectangle of whole texture
     #[inline]
     pub fn new(region: Rect) -> Sprite {
         Sprite {
@@ -56,6 +62,8 @@ impl Sprite {
         }
     }
 
+    /// draw "draws" texture to to batch. All it does is that it appends its vertex data transformed
+    /// by provided matrix and colored by provides color.
     #[inline]
     pub fn draw(&mut self, batch: &mut Batch, mat: &Mat, color: &RGBA) {
         self.update_trig_data(mat, color);

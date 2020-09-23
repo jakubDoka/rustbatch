@@ -3,6 +3,9 @@ name = "rustbatch"
 version = "0.1.0"
 authors = ["jakub <mlokogegelmlok@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/jakubDoka/rustbatch"
+description = "purely game dewelopment crate that offers simple but powerfull 2D rendering and lot more"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 sdl2 = "0.34.2"

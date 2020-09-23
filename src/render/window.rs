@@ -13,8 +13,6 @@ use crate::render::batch::Batch;
 use crate::math::rgba::RGBA;
 use self::sdl2::EventPump;
 
-static mut INITED: bool = false;
-
 pub struct Window {
     buffer: Buffer,
     window: video::Window,
@@ -58,36 +56,6 @@ impl Window {
 
         (Window{window, buffer: buffer(), camera: mat::IM, background_color: rgba::BLACK}, sdl.event_pump().unwrap(), gl)
     }
-
-    /*pub fn init(_: &video::Window, _: &GLContext, system: &VideoSubsystem) {
-        unsafe {
-            INITED = true;
-        }
-        let gl_attr = system.gl_attr();
-        gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
-        gl_attr.set_context_version(3, 3);
-
-        let _gl = gl::load_with(|s| system.gl_get_proc_address(s) as *const std::os::raw::c_void);
-
-        unsafe {
-            gl::Enable(gl::BLEND);
-            gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
-        }
-    }
-
-    pub fn new(win: video::Window) -> Window {
-        Self::from_buffer(win, Buffer::new())
-    }
-
-    pub fn from_buffer(window: video::Window, buffer: Buffer) -> Window {
-        unsafe {
-            if !INITED {
-                panic!("you forgot to call Window::init()")
-            }
-        }
-
-        Window{window, buffer, camera: mat::IM, background_color: rgba::BLACK}
-    }*/
 
     pub fn update(& self) {
         let (w, h) = self.size();

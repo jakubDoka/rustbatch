@@ -31,9 +31,9 @@ impl Vertex {
 }
 
 
-pub const POSITION: Vertex = VertexProperties{size: 2, location: 0, offset: 0};
-pub const TEXTURE_REGION: Vertex = VertexProperties{size: 2, location: 1, offset: 2};
-pub const COLOR: Vertex = VertexProperties{size: 4, location: 2, offset: 4};
+pub const POSITION: Vertex = Vertex{size: 2, location: 0, offset: 0};
+pub const TEXTURE_REGION: Vertex = Vertex{size: 2, location: 1, offset: 2};
+pub const COLOR: Vertex = Vertex{size: 4, location: 2, offset: 4};
 pub const DATA_SIZE: usize = (POSITION.size + TEXTURE_REGION.size + COLOR.size) as usize;
 
 /// Buffer is used for customizing how is the vertex data processed

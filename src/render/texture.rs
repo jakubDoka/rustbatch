@@ -4,6 +4,8 @@ use crate::math::rect::Rect;
 use crate::math::vect::Vect;
 use std::path::Path;
 
+/// Texture is wrapper for opengl texture object
+/// its just an unsafe pointer with useful methods
 #[derive(Clone)]
 pub struct Texture {
     id: gl::types::GLuint,
@@ -11,17 +13,24 @@ pub struct Texture {
 }
 
 impl Texture {
+    /// default creates what i consider default texture from provided path
+    /// (no interpolation, alfa channel)
+    #[inline]
     pub fn default(path: &str) -> Result<Texture, ImageError> {
         Self::new(path, gl::NEAREST, gl::RGBA)
     }
 
+    /// new creates new texture. for mode you have two options:
+    /// - gl::NEAREST - it makes pixels visible
+    /// - gl::LINEAR - it linearly interpolates between pixels and generally looks little ugly
     pub fn new<P: AsRef<Path>>(path: P, mode: gl::types::GLenum, color: gl::types::GLenum) -> Result<Texture, ImageError> {
         let img = image::open(path)?.flipv();
-
 
         Ok(Self::from_img(&img, mode, color))
     }
 
+    /// from_img returns texture from provided DynamicImage in case you want to do some pre processing
+    /// on texture
     pub fn from_img(img: &DynamicImage ,mode: gl::types::GLenum, color: gl::types::GLenum) -> Texture {
         let mut id: gl::types::GLuint = 0;
 
@@ -54,14 +63,17 @@ impl Texture {
         self.size
     }
 
+    /// frame returns bounding rectangle of texture useful for sprite
     pub fn frame(&self) -> Rect {
         Rect::from_vec(self.size)
     }
 
+    /// id returns texture id. its a pointer to gl texture object
     pub fn id(&self) -> gl::types::GLuint {
         self.id
     }
 
+    /// set used uses ah texture
     pub fn set_used(&self) {
         unsafe {
             gl::BindTexture(gl::TEXTURE_2D, self.id);

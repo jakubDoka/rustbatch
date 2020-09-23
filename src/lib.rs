@@ -1,4 +1,8 @@
-//! This crate provides some performant tools for building huge 2D games that deals with huge amount of entities.
+//! In order to get the crate running, you have to copy `msvc` folder and `build.rs` from crates
+//! [repository](https://github.com/jakubDoka/rustbatch)
+//! and place it into root of your project.
+//! # RustBatch
+//! This crate provides some performant tools for building big 2D games that deals with huge amount of entities.
 //! So far crate contains:
 //! - OpenGl abstraction based around batching.
 //! - Collision scanner that provides fast collision detection for couple thousand entities
@@ -6,6 +10,10 @@
 //! - Math module that contains structs like Matrix, Vector or Rectangle
 //! - Custom per-batch vertex and fragment shader also supported
 //! - Sprite packing so you can take advantage of batching as match as you can
+//! # Warming
+//! Important thing to note is that some functions from render module are calling functions and
+//! using enums from gl crate. Functions has to be loaded first witch you achieve by creating
+//! window.
 //! # Example
 //! ```
 //!extern crate rustbatch;
@@ -71,7 +79,7 @@
 //!        // drawing batch to window
 //!        window.draw(&batch);
 //!
-//!        // Don't forget to clear batch if you not planning to use it as canvas
+//!        // Don't forget to clear batch if you not planning to use it as canvas,
 //!        // after all drawing sprites to batch takes some time
 //!        batch.clear();
 //!
@@ -80,10 +88,7 @@
 //!    }
 //!}
 //! ```
-//! # Warming
-//! Important thing to note is that some functions from render module are calling functions and
-//! using enums from gl crate. Functions has to be loaded first witch you achieve by creating
-//! window.
+
 pub mod images;
 pub mod entity;
 pub mod render;

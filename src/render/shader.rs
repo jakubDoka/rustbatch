@@ -5,12 +5,15 @@ use std::fs;
 use std::path::Path;
 use crate::render::create_whitespace_cstring_with_len;
 
+/// Shader is wrapper for opengl shader
+/// it holds only pointer of the shader so you can freely clone ti
 #[derive(Clone)]
 pub struct Shader {
     id: gl::types::GLuint,
 }
 
 impl Shader {
+    /// new loads and compiles shader from given path
     pub fn new<P: AsRef<Path>>(path: P) -> Result<Shader, String> {
         let source = fs::read_to_string(path.as_ref()).map_err(|err| err.to_string())?;
 
@@ -25,6 +28,7 @@ impl Shader {
         )
     }
 
+    /// default_vertex returns default vertex shader
     pub fn default_vertex() -> Shader {
         let vert: CString = CString::new("
             #version 330 core\n\n
@@ -49,6 +53,7 @@ impl Shader {
         Self::from_source(&vert, gl::VERTEX_SHADER).unwrap()
     }
 
+    /// default_fragment returns default fragment shader
     pub fn default_fragment() -> Shader {
         let frag: CString = CString::new("
             #version 330 core\n
@@ -66,11 +71,13 @@ impl Shader {
         Self::from_source(&frag, gl::FRAGMENT_SHADER).unwrap()
     }
 
+    /// from_source compiles shader from provided cstring
     pub fn from_source(source: &CStr, kind: gl::types::GLenum) -> Result<Shader, String> {
         let id = shader_from_source(source, kind)?;
         Ok(Shader { id })
     }
 
+    /// id returns id of shader, likewise program this is pointer to opengl object
     pub fn id(&self) -> gl::types::GLuint {
         self.id
     }

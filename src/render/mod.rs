@@ -1,5 +1,5 @@
 //! render is module with all opengl related functionality. Create window first then you can use all
-//! functionality
+//! features freely.
 pub mod shader;
 pub mod buffer;
 pub mod batch;

@@ -6,10 +6,10 @@ use crate::render::texture::Texture;
 /// Batch is a core drawing method. You can append vertex data to it and then draw it to window.
 /// More about a data structure and how to modify it can be found in buffer module.
 pub struct Batch {
-    vertices: Vec<f32>,
-    indices: Vec<u32>,
-    texture: Texture,
-    program: Program,
+    pub(crate) vertices: Vec<f32>,
+    pub(crate) indices: Vec<u32>,
+    pub(crate) texture: Texture,
+    pub(crate) program: Program,
 }
 
 impl Batch {
