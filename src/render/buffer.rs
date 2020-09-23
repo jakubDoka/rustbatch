@@ -47,7 +47,7 @@ pub struct Buffer {
 impl Buffer {
     /// default returns default buffer
     pub fn default() -> Self {
-        Self::from_vertexes(&[POSITION, TEXTURE_REGION, COLOR])
+        Self::new(&[POSITION, TEXTURE_REGION, COLOR])
     }
 
     /// new returns new buffer from Vertexes
