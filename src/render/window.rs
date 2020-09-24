@@ -76,7 +76,7 @@ impl Window {
             gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
         }
 
-        (Window{window, buffer: buffer(), camera: mat::IM, background_color: rgba::BLACK}, sdl.event_pump().unwrap(), gl)
+        (Window{window, buffer: buffer(), camera: Mat::IM, background_color: rgba::BLACK}, sdl.event_pump().unwrap(), gl)
     }
 
     /// update updates window, just call it at the end

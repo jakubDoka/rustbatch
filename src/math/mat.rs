@@ -114,7 +114,7 @@ impl Mat {
 
     #[inline]
     pub fn chained(&self, o: &Mat) -> Mat {
-        let mut chained = ZM.clone();
+        let mut chained = Self::ZM.clone();
         chained.c[0] = o.c[0] * self.c[0] + o.c[2] * self.c[1];
         chained.c[1] = o.c[1] * self.c[0] + o.c[3] * self.c[1];
         chained.c[2] = o.c[0] * self.c[2] + o.c[2] * self.c[3];
@@ -146,6 +146,7 @@ mod tests {
 
     use crate::math::{mat, vect};
     use crate::math::vect::*;
+    use crate::Mat;
 
     fn round(a: f32, decimals: i32) -> f32 {
         let mul = 10f32.powi(decimals);
@@ -154,6 +155,6 @@ mod tests {
 
     #[test]
     fn prj_test() {
-        assert_eq!(Vect::ZERO, super::IM.prj(Vect::ZERO))
+        assert_eq!(Vect::ZERO, Mat::IM.prj(Vect::ZERO))
     }
 }

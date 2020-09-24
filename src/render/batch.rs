@@ -20,7 +20,7 @@ impl Batch {
 
     /// from_program creates batch with custom rendering program
     /// # Example
-    /// ```
+    /// ```should_fail
     /// use rustbatch::render::program::Program;
     /// use rustbatch::render::shader::Shader;
     /// use rustbatch::{Batch, Texture};
