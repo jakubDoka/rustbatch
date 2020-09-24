@@ -1,14 +1,6 @@
 use crate::math::vect::Vect;
 
-pub static DEFAULT_VIEWPORT_MATRIX: glm::Mat4 = glm::Mat4{
-    c0: glm::Vec4{x: 1f32, y: 0f32, z: 0f32, w: 0f32},
-    c1: glm::Vec4{x: 0f32, y: 1f32, z: 0f32, w: 0f32},
-    c2: glm::Vec4{x: 0f32, y: 0f32, z: 1f32, w: 0f32},
-    c3: glm::Vec4{x: -1f32, y: -1f32, z: 0f32, w: 1f32},
-};
 
-pub static IM: Mat = Mat{ c:[1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
-pub static ZM: Mat = Mat{ c:[0f32; 6]};
 
 #[derive(Copy, Clone)]
 pub struct Mat {
@@ -16,11 +8,14 @@ pub struct Mat {
 }
 
 impl Mat {
+    pub const  IM: Mat = Mat{ c:[1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
+    pub const  ZM: Mat = Mat{ c:[0f32; 6]};
+
     #[inline]
     pub fn new(pos: Vect, scl: Vect, rot: f32) -> Mat {
         let s = rot.sin();
         let c = rot.cos();
-        Mat{ c: [c * scl.x, s * scl.x, c * scl.y, s * scl.y, pos.x, pos.y] }
+        Mat{ c: [c * scl.x, s * scl.x, -s * scl.y, c * scl.y, pos.x, pos.y] }
     }
 
     #[inline]
@@ -159,6 +154,6 @@ mod tests {
 
     #[test]
     fn prj_test() {
-        assert_eq!(vect::ZERO, super::IM.prj(vect::ZERO))
+        assert_eq!(Vect::ZERO, super::IM.prj(Vect::ZERO))
     }
 }

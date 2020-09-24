@@ -98,6 +98,7 @@ pub mod math;
 pub use sdl2;
 pub use image;
 pub use gl;
+pub use rand;
 
 pub use debug::FPS;
 pub use render::{window::Window, texture::Texture, sprite::Sprite, batch::Batch};

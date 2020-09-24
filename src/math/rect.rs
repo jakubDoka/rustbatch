@@ -2,7 +2,7 @@ use crate::math::vect;
 use crate::math::vect::Vect;
 use std::mem;
 
-pub static ZERO: Rect = Rect{min: vect::ZERO, max: vect::ZERO};
+pub static ZERO: Rect = Rect{min: Vect::ZERO, max: Vect::ZERO};
 
 #[derive(Copy, Clone)]
 pub struct Rect {
@@ -46,7 +46,7 @@ impl Rect {
     #[inline]
     pub fn from_vec(v: Vect) -> Rect {
         Rect {
-            min: vect::ZERO,
+            min: Vect::ZERO,
             max: v,
         }
     }
@@ -86,7 +86,7 @@ impl Rect {
 
     #[inline]
     pub fn to_local(&self) -> Rect {
-        Self::centered(vect::ZERO, self.width(), self.height())
+        Self::centered(Vect::ZERO, self.width(), self.height())
     }
 
     #[inline]

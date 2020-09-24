@@ -8,7 +8,7 @@ use crate::entity::{FastHash};
 use crate::math::clamp;
 
 pub struct Scanner<T: IDType = u64> {
-    map: Vec<Vec<HashSet<T, FastHash>>>,
+    pub map: Vec<Vec<HashSet<T, FastHash>>>,
     tile_size: Vect,
     w: usize,
     h: usize,
@@ -21,7 +21,7 @@ impl<T: IDType> Scanner<T> {
 
     #[inline]
     pub fn get_coord(&self, pos: &Vect) -> (usize, usize) {
-        ((pos.x / self.tile_size.x) as usize, (pos.y/self.tile_size.y) as usize)
+        (clamp((pos.x / self.tile_size.x) as usize, 0, self.w-1), clamp((pos.y/self.tile_size.y) as usize, 0, self.h-1))
     }
 
     #[inline]
@@ -72,10 +72,25 @@ impl<T: IDType> Scanner<T> {
         let mut min = self.get_coord(&rect.min);
         let mut max = self.get_coord(&rect.max);
         min = (
-            if min.0 == 0 {0} else {clamp(min.0-1, 0, self.w-1)},
-            if min.1 == 0 {0} else {clamp(min.1-1, 0, self.h-1)}
+            if min.0 == 0 {0} else {clamp(min.0-1, 0, self.w)},
+            if min.1 == 0 {0} else {clamp(min.1-1, 0, self.h)}
         );
-        max = (clamp(max.0+2, 0, self.w-1),clamp(max.1+2, 0, self.h-1));
+        max = (clamp(max.0+2, 0, self.w),clamp(max.1+2, 0, self.h));
+        for y in min.1..max.1 {
+            for x in min.0..max.0 {
+                collector.extend(&self.map[y][x]);
+            }
+        }
+    }
+
+    #[inline]
+    pub fn query_point(&self, pos: &Vect, collector: &mut Vec<T>) {
+        let mut pos = self.get_coord(pos);
+        let min = (
+            if pos.0 == 0 {0} else {clamp(pos.0-1, 0, self.w)},
+            if pos.1 == 0 {0} else {clamp(pos.1-1, 0, self.h)}
+        );
+        let max = (clamp(pos.0+2, 0, self.w),clamp(pos.1+2, 0, self.h));
 
         for y in min.1..max.1 {
             for x in min.0..max.0 {

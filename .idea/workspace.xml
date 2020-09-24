@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="dfe918c4-650d-4cde-a8d7-a96b6897f532" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/scanner.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/scanner.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/math/mat.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/mat.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/math/rect.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/rect.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/vect.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/vect.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/render/window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +61,7 @@
       <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch" />
     </key>
   </component>
-  <component name="RunManager" selected="Cargo Command.Test entity::pathfinder2::tests::update_test">
+  <component name="RunManager" selected="Cargo Command.Test math::vect::tests::average_test">
     <configuration name="Test entity::pathfinder2::tests::update_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
       <option name="command" value="test --package rustbatch --bin rustbatch entity::pathfinder2::tests::update_test -- --exact" />
@@ -94,9 +98,9 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test math::scanner::tests::remove_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+    <configuration name="Test math::vect::tests::average_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
-      <option name="command" value="test --package rustbatch --bin rustbatch math::scanner::tests::remove_test -- --exact" />
+      <option name="command" value="test --package rustbatch --lib math::vect::tests::average_test -- --exact" />
       <option name="allFeatures" value="false" />
       <option name="emulateTerminal" value="false" />
       <option name="backtrace" value="SHORT" />
@@ -120,11 +124,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo Command.Test math::vect::tests::average_test" />
         <item itemvalue="Cargo Command.Test entity::pathfinder2::tests::update_test" />
         <item itemvalue="Cargo Command.Test entity::pathfinder::tests::map_test" />
         <item itemvalue="Cargo Command.Test scanner::tests" />
         <item itemvalue="Cargo Command.Test entity::scanner::tests::remove_test" />
-        <item itemvalue="Cargo Command.Test math::scanner::tests::remove_test" />
       </list>
     </recent_temporary>
   </component>
@@ -165,30 +169,30 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="463" y="124" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1600688913052" />
-    <state width="1323" height="270" key="GridCell.Tab.0.bottom" timestamp="1600711681029">
+    <state width="1323" height="270" key="GridCell.Tab.0.bottom" timestamp="1600947468105">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1600711681029" />
-    <state width="1323" height="270" key="GridCell.Tab.0.center" timestamp="1600711681028">
+    <state width="1323" height="270" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
+    <state width="1323" height="270" key="GridCell.Tab.0.center" timestamp="1600947468105">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1600711681028" />
-    <state width="1323" height="270" key="GridCell.Tab.0.left" timestamp="1600711681028">
+    <state width="1323" height="270" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
+    <state width="1323" height="270" key="GridCell.Tab.0.left" timestamp="1600947468105">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1600711681028" />
-    <state width="1323" height="270" key="GridCell.Tab.0.right" timestamp="1600711681028">
+    <state width="1323" height="270" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
+    <state width="1323" height="270" key="GridCell.Tab.0.right" timestamp="1600947468105">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1600711681028" />
+    <state width="1323" height="270" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
     <state x="492" y="283" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600160120328">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="492" y="283" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.738@0.0.1366.738" timestamp="1600160120328" />
-    <state x="390" y="102" width="585" height="534" key="find.popup" timestamp="1600797826969">
+    <state x="390" y="102" width="585" height="534" key="find.popup" timestamp="1600946475396">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="390" y="102" width="585" height="534" key="find.popup/0.0.1366.738@0.0.1366.738" timestamp="1600797826969" />
+    <state x="390" y="102" width="585" height="534" key="find.popup/0.0.1366.738@0.0.1366.738" timestamp="1600946475396" />
     <state x="339" y="165" key="run.anything.popup" timestamp="1600456575126">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
