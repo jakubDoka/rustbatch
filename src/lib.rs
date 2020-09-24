@@ -21,7 +21,7 @@
 //!use rustbatch::{sdl2, image, gl};
 //!use rustbatch::debug::FPS;
 //!use rustbatch::{Window, Texture, Sprite, Batch};
-//!use rustbatch::{IM, WHITE};
+//!use rustbatch::{Mat, WHITE};
 //!
 //!
 //!fn main() {
@@ -74,7 +74,7 @@
 //!        // drawing sprite to batch
 //!        // IM is matrix transform. more about matrix in mat module docs
 //!        // texture color is multiplied by inputted color
-//!        sprite.draw(&mut batch, &IM, &WHITE);
+//!        sprite.draw(&mut batch, &Mat::IM, &WHITE);
 //!
 //!        // drawing batch to window
 //!        window.draw(&batch);
@@ -102,7 +102,7 @@ pub use rand;
 
 pub use debug::FPS;
 pub use render::{window::Window, texture::Texture, sprite::Sprite, batch::Batch};
-pub use math::{mat::IM, rgba::WHITE};
+pub use math::{mat::Mat, rgba::WHITE};
 
 
 

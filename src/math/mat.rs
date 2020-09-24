@@ -8,8 +8,8 @@ pub struct Mat {
 }
 
 impl Mat {
-    pub const  IM: Mat = Mat{ c:[1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
-    pub const  ZM: Mat = Mat{ c:[0f32; 6]};
+    pub const IM: Mat = Mat{ c:[1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
+    pub const ZM: Mat = Mat{ c:[0f32; 6]};
 
     #[inline]
     pub fn new(pos: Vect, scl: Vect, rot: f32) -> Mat {
