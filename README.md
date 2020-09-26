@@ -6,3 +6,5 @@ where i demonstrated capabilities on rendering and processing 10k boids with 60 
 frame.
 
 If you are wondering why are first tree versions of rustbatch yanked, lets say i did not test core featires sufficiently.
+
+Also rustbatch has its [discord chanell](https://discord.gg/QXpDcE).
