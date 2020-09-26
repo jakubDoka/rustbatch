@@ -74,7 +74,7 @@
 //!
 //!        // drawing sprite to batch
 //!        // texture color is multiplied by inputted color
-//!        sprite.draw(&mut batch, Vect::ZERO, Vect::mirror(4f32), 0f32, &WHITE);
+//!        sprite.draw(&mut batch, Vect::ZERO, Vect::mirror(1f32), 0f32, &WHITE);
 //!
 //!        // drawing batch to window
 //!        window.draw(&batch);
