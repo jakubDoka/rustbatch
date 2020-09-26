@@ -28,7 +28,7 @@
 //!    // creating window to draw to and event pump to read input. Ignore
 //!    // gl var, it cannot be dropped otherwise rendering will not work so just leave it be
 //!    use rustbatch::math::vect::Vect;
-//! let (mut window, mut event_pump, gl) = Window::new(|sys| {
+//! let (mut window, mut event_pump, _gl, _sdl, _video_subsystem) = Window::new(|sys| {
 //!        sys.window("rusty batch", 400, 400)
 //!            .opengl()
 //!            .resizable()
@@ -40,7 +40,7 @@
 //!
 //!    // This is wrapped opengl texture object
 //!    let texture = Texture::new(
-//!        "C:/Users/jakub/Documents/programming/rust/src/rustbatch_examples/boids/src/bullets.png",
+//!        "C:/Users/jakub/Documents/programming/rust/src/rustbatch/assets/logo.png",
 //!        gl::NEAREST, // So the pixels are drawn with no interpolation
 //!        gl::RGBA // Color structure, you would use gl::RGB if your texture does not have alpha channel
 //!    ).unwrap();
@@ -74,7 +74,7 @@
 //!
 //!        // drawing sprite to batch
 //!        // texture color is multiplied by inputted color
-//!        sprite.draw(&mut batch, Vect::ZERO, Vect::mirror(1f32), 0f32, &WHITE);
+//!        sprite.draw(&mut batch, Vect::ZERO, Vect::mirror(4f32), 0f32, &WHITE);
 //!
 //!        // drawing batch to window
 //!        window.draw(&batch);

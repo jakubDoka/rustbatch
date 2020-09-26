@@ -11,7 +11,7 @@ use sdl2::video::GLContext;
 use crate::render::buffer::Buffer;
 use crate::render::batch::Batch;
 use crate::math::rgba::RGBA;
-use self::sdl2::EventPump;
+use self::sdl2::{EventPump, Sdl};
 use crate::math::rect::Rect;
 
 /// Window core feature of this library, everything starts here. Only after creating window you can
@@ -43,26 +43,26 @@ impl Window {
     /// ```
     /// use rustbatch::Window;
     ///
-    /// let (window, event_pump, _gl) = Window::new(|sys| {
+    /// let (window, event_pump, _gl, _sdl, _video_subsystem) = Window::new(|sys| {
     ///     sys.window("Title", 1000, 600)
     ///     .opengl()
     ///     .build()
     ///     .unwrap()
     /// });
     /// ```
-    pub fn new<F: FnOnce(&VideoSubsystem) -> video::Window>(gen: F) -> (Window, EventPump, GLContext) {
+    pub fn new<F: FnOnce(&VideoSubsystem) -> video::Window>(gen: F) -> (Window, EventPump, GLContext, Sdl, VideoSubsystem) {
         Self::from_buffer(gen, || Buffer::default())
     }
 
     /// from_buffer creates window with custom buffer. Remember that changing vertex structure
     /// requires also batch with custom program
-    pub fn from_buffer<F, B>(gen: F, buffer: B) -> (Window, EventPump, GLContext)
+    pub fn from_buffer<F, B>(gen: F, buffer: B) -> (Window, EventPump, GLContext, Sdl, VideoSubsystem)
         where F: FnOnce(&VideoSubsystem) -> video::Window,
               B: FnOnce() -> Buffer  {
         let sdl = sdl2::init().expect("You probably did not set up your project correctly go to \
         crates documentation, you can find all answers there.");
-        let video_subsystem = sdl.video().unwrap();
 
+        let video_subsystem = sdl.video().unwrap();
         let gl_attr = video_subsystem.gl_attr();
         gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
         gl_attr.set_context_version(3, 3);
@@ -77,7 +77,7 @@ impl Window {
             gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
         }
 
-        (Window{window, buffer: buffer(), camera: Mat::IM, background_color: rgba::BLACK}, sdl.event_pump().unwrap(), gl)
+        (Window{window, buffer: buffer(), camera: Mat::IM, background_color: rgba::BLACK}, sdl.event_pump().unwrap(), gl, sdl, video_subsystem)
     }
 
     /// update updates window, just call it at the end
