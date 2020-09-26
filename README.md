@@ -7,4 +7,4 @@ frame.
 
 If you are wondering why are first tree versions of rustbatch yanked, lets say i did not test core featires sufficiently.
 
-Also rustbatch has its [discord chanell](https://discord.gg/QXpDcE).
+Also, rustbatch has its [discord channel](https://discord.gg/QXpDcE).
