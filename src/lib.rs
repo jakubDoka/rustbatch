@@ -21,13 +21,14 @@
 //!use rustbatch::{sdl2, image, gl};
 //!use rustbatch::debug::FPS;
 //!use rustbatch::{Window, Texture, Sprite, Batch};
-//!use rustbatch::{Mat, WHITE};
+//!use rustbatch::{Mat, WHITE, Vect};
 //!
 //!
 //!fn main() {
 //!    // creating window to draw to and event pump to read input. Ignore
 //!    // gl var, it cannot be dropped otherwise rendering will not work so just leave it be
-//!    let (mut window, mut event_pump, gl) = Window::new(|sys| {
+//!    use rustbatch::math::vect::Vect;
+//! let (mut window, mut event_pump, gl) = Window::new(|sys| {
 //!        sys.window("rusty batch", 400, 400)
 //!            .opengl()
 //!            .resizable()
@@ -39,7 +40,7 @@
 //!
 //!    // This is wrapped opengl texture object
 //!    let texture = Texture::new(
-//!        "C:/Users/jakub/Documents/programming/rust/src/ggl/src/bullets.png",
+//!        "C:/Users/jakub/Documents/programming/rust/src/rustbatch_examples/boids/src/bullets.png",
 //!        gl::NEAREST, // So the pixels are drawn with no interpolation
 //!        gl::RGBA // Color structure, you would use gl::RGB if your texture does not have alpha channel
 //!    ).unwrap();
@@ -72,9 +73,8 @@
 //!        window.clear();
 //!
 //!        // drawing sprite to batch
-//!        // IM is matrix transform. more about matrix in mat module docs
 //!        // texture color is multiplied by inputted color
-//!        sprite.draw(&mut batch, &Mat::IM, &WHITE);
+//!        sprite.draw(&mut batch, Vect::ZERO, Vect::mirror(1f32), 0f32, &WHITE);
 //!
 //!        // drawing batch to window
 //!        window.draw(&batch);
@@ -102,7 +102,7 @@ pub use rand;
 
 pub use debug::FPS;
 pub use render::{window::Window, texture::Texture, sprite::Sprite, batch::Batch};
-pub use math::{mat::Mat, rgba::WHITE};
+pub use math::{mat::Mat, rgba::WHITE, vect::Vect};
 
 
 

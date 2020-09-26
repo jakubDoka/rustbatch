@@ -138,11 +138,11 @@ mod tests {
         }
 
         for i in 0..100 {
-            map.insert(&poss[i], i);
+            map.insert(poss[i], i);
         }
 
         for i in 0..100 {
-            map.remove(&poss[i], i);
+            map.remove(poss[i], i);
         }
 
         assert_eq!(0 as usize, map.get_shape_count());

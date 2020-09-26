@@ -1,4 +1,4 @@
-mod mat3;
+
 pub mod rgba;
 pub mod mat;
 pub mod rect;
