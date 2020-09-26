@@ -1,10 +1,10 @@
 [package]
 name = "rustbatch"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["jakub <mlokogegelmlok@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/jakubDoka/rustbatch"
-description = "purely game dewelopment crate that offers simple but powerfull 2D rendering and lot more"
+description = "purely game dewelopment crate that offers simple but powerfull 2D rendering and some fast solutions for game world bottle necks"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
@@ -12,7 +12,6 @@ sdl2 = "0.34.2"
 gl = "0.14.0"
 glm = "0.2.3"
 image = "0.23.9"
-num-traits = "0.2.12"
 rand = "0.7.3"
 hashers = "1.0.1"
 anymap = "0.12.1"

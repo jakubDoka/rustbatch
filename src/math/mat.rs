@@ -1,113 +1,97 @@
 use crate::math::vect::Vect;
+use std::f32::consts::PI;
 
 
-
+/// mat is 3 x 3 matrix used for 2D transformations. Simples explanation i can coe up with:
+/// 3x3 matrix is vector trio where x is vector describing x axis and y is describing y axis
+/// c is determining where these two axises intersect. Matrix is something like a custom coordinate
+/// system. To convert point from classic coordinate system to matrix coordinates you use `prj`
+/// method. Don't worry though if you do not understand. Matrix in this package is just optional
+/// interface you may or may not use. All it does are slightly more complex transformations.
 #[derive(Copy, Clone)]
 pub struct Mat {
-    pub c: [f32; 6],
+    pub x: Vect,
+    pub y: Vect,
+    pub c: Vect,
 }
 
 impl Mat {
-    pub const IM: Mat = Mat{ c:[1f32, 0f32, 0f32, 1f32, 0f32, 0f32]};
-    pub const ZM: Mat = Mat{ c:[0f32; 6]};
+    pub const IM: Mat = Mat{ x: Vect::RIGHT, y: Vect::UP, c:Vect::ZERO};
+    pub const ZM: Mat = Mat{ x: Vect::ZERO, y: Vect::ZERO, c: Vect::ZERO};
 
+    /// new is matrix constructor
     #[inline]
     pub fn new(pos: Vect, scl: Vect, rot: f32) -> Mat {
-        let s = rot.sin();
-        let c = rot.cos();
-        Mat{ c: [c * scl.x, s * scl.x, -s * scl.y, c * scl.y, pos.x, pos.y] }
+        Mat{
+            x: Vect::rad(rot, scl.x),
+            y: Vect::rad(rot + PI/2f32, scl.y),
+            c: pos
+        }
     }
 
+    /// to_glm_mat4 turns Mat to glm::Mat4 for internal purposes
     #[inline]
     pub fn to_glm_mat4(&self) -> glm::Mat4 {
         return glm::Mat4::new(
-            glm::Vec4::new(self.c[0], self.c[1], 0f32, 0f32),
-            glm::Vec4::new(self.c[2], self.c[3], 0f32, 0f32),
+            glm::Vec4::new(self.x.x, self.x.y, 0f32, 0f32),
+            glm::Vec4::new(self.y.x, self.y.y, 0f32, 0f32),
             glm::Vec4::new(0f32, 0f32, 1f32, 0f32),
-            glm::Vec4::new(self.c[4], self.c[5], 0f32, 1f32),
+            glm::Vec4::new(self.c.x, self.c.y, 0f32, 1f32),
         )
     }
 
     #[inline]
-    pub fn x_axis(&self) -> Vect {
-        Vect::new(self.c[0], self.c[1])
-    }
-
-    #[inline]
-    pub fn y_axis(&self) -> Vect {
-        Vect::new(self.c[2], self.c[3])
-    }
-
-    #[inline]
-    pub fn origin(&self) -> Vect {
-        Vect::new(self.c[4], self.c[5])
-    }
-
-    #[inline]
-    pub fn decompose(&self) -> [Vect; 3] {
-        [self.x_axis(), self.y_axis(), self.origin()]
-    }
-
-    #[inline]
-    pub fn scale_origin_xy(mut self, view: Vect) -> Mat {
-        self.c[4] *= view.x;
-        self.c[5] *= view.y;
-
+    pub(crate) fn transform_from_window_space(mut self, size: (u32, u32)) -> Self {
+        self.c /= Vect::u32(size.0, size.1)/2f32;
         self
     }
-
 
     // Moved moves everything by the delta vector.
     #[inline]
     pub fn moved(mut self, delta: Vect) -> Mat {
-        self.mv(delta);
+        self.c += delta;
         self
-    }
-
-    // Moved moves everything by the delta vector.
-    #[inline]
-    pub fn mv(&mut self, delta: Vect) {
-        self.c[4] += delta.x;
-        self.c[5] += delta.y;
     }
 
     #[inline]
     pub fn sxy(&mut self, scl: Vect) {
-        self.c[0] *= scl.x;
-        self.c[1] *= scl.y;
-        self.c[2] *= scl.x;
-        self.c[3] *= scl.y;
-        self.c[4] *= scl.x;
-        self.c[5] *= scl.y;
+        self.x *= scl;
+        self.y *= scl;
+        self.c *= scl;
     }
 
     #[inline]
     pub fn scaled_xy(mut self, around: Vect, scl: Vect) -> Mat {
-        self.mv(around.inverted());
+        self.c -= around;
         self.sxy(scl);
-        self.mv(around);
+        self.c += around;
 
         self
     }
 
     #[inline]
     pub fn scaled(mut self, around: Vect, scl: f32) -> Mat {
-        self.mv(around.inverted());
+        self.c -= around;
         self.sxy( Vect::new(scl, scl));
-        self.mv(around);
+        self.c += around;
 
         self
     }
 
     #[inline]
     pub fn rotated(mut self, around: Vect, ang: f32) -> Mat {
-        self.mv(around.inverted());
+        self.c -= around;
 
         let c = ang.cos();
         let s = ang.sin();
-        self = self.chained(&Mat{c:[c, s, -s, c, 0f32, 0f32]});
 
-        self.mv(around);
+        self = self.chained(&Mat{
+            x: Vect {x: c, y: s},
+            y: Vect {x: -s, y: c},
+            c: Vect::ZERO
+        });
+
+        self.c += around;
 
         self
     }
@@ -115,27 +99,27 @@ impl Mat {
     #[inline]
     pub fn chained(&self, o: &Mat) -> Mat {
         let mut chained = Self::ZM.clone();
-        chained.c[0] = o.c[0] * self.c[0] + o.c[2] * self.c[1];
-        chained.c[1] = o.c[1] * self.c[0] + o.c[3] * self.c[1];
-        chained.c[2] = o.c[0] * self.c[2] + o.c[2] * self.c[3];
-        chained.c[3] = o.c[1] * self.c[2] + o.c[3] * self.c[3];
-        chained.c[4] = o.c[0] * self.c[4] + o.c[2] * self.c[5] + o.c[4];
-        chained.c[5] = o.c[1] * self.c[4] + o.c[3] * self.c[5] + o.c[5];
+        chained.x.x = o.x.x * self.x.x + o.y.x * self.x.y;
+        chained.x.y = o.x.y * self.x.x + o.y.y * self.x.y;
+        chained.y.x = o.x.x * self.y.x + o.y.x * self.y.y;
+        chained.y.y = o.x.y * self.y.x + o.y.y * self.y.y;
+        chained.c.x = o.x.x * self.c.x + o.y.x * self.c.y + o.c.x;
+        chained.c.y = o.x.y * self.c.x + o.y.y * self.c.y + o.c.y;
 
         chained
     }
 
     #[inline]
     pub fn prj(&self, u: Vect) -> Vect {
-        Vect::new(self.c[0] * u.x + self.c[2] * u.y + self.c[4], self.c[1] * u.x + self.c[3] * u.y + self.c[5])
+        Vect::new(self.x.x * u.x + self.y.x * u.y + self.c.x, self.x.y * u.x + self.y.y * u.y + self.c.y)
     }
 
     #[inline]
     pub fn unprj(&self, u: Vect) -> Vect {
-        let det = self.c[0] * self.c[3] - self.c[2] * self.c[1];
+        let det = self.x.x * self.y.y - self.y.x * self.x.y;
         Vect::new(
-            (self.c[3] * (u.x - self.c[4]) - self.c[2] * (u.y - self.c[5])) / det,
-            (-self.c[1] * (u.x - self.c[4]) + self.c[0] * (u.y - self.c[5])) / det,
+            (self.y.y * (u.x - self.c.x) - self.y.x * (u.y - self.c.y)) / det,
+            (-self.x.y * (u.x - self.c.x) + self.x.x * (u.y - self.c.y)) / det,
         )
     }
 }

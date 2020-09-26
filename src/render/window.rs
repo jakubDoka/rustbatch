@@ -12,6 +12,7 @@ use crate::render::buffer::Buffer;
 use crate::render::batch::Batch;
 use crate::math::rgba::RGBA;
 use self::sdl2::EventPump;
+use crate::math::rect::Rect;
 
 /// Window core feature of this library, everything starts here. Only after creating window you can
 /// safely use other parts of render module because window also calls gl::load_with() witch makes
@@ -92,29 +93,58 @@ impl Window {
     pub fn draw(&self, batch: &Batch) {
         let (w, h) = self.size();
 
-        batch.program.set_camera(self.camera);
-        batch.program.set_view_size(Vect::new(w as f32, h as f32));
+        batch.program.set_camera(self.camera.transform_from_window_space((w, h)));
+        batch.program.set_view_size(Vect::u32(w, h));
         batch.program.set_used();
         batch.texture.set_used();
 
         self.buffer.set_vertices_and_indices(&batch.vertices, &batch.indices);
-
         self.buffer.set_used();
         self.buffer.draw(batch.indices.len());
     }
 
+    /// get_viewport_rect returns rectangle that whole screen fits in and that is even if you
+    /// rotate camera. Useful when you don't want to draw sprites that are foo screen
+    pub fn get_viewport_rect(&self) -> Rect {
+        let (mut w,mut h) = self.size();
+        let w = w as i32 /2;
+        let h = h as i32 /2;
+
+        let mut corners: [Vect; 4] = [
+            Vect::i32(-w, -h),
+            Vect::i32(w, -h),
+            Vect::i32(w, h),
+            Vect::i32(-w, h),
+        ];
+
+        for i in 0..corners.len() {
+            corners[i] = self.camera.unprj(corners[i]);
+        }
+
+        Rect::bounds_for(&corners)
+    }
+
     /// set_background_color sets background color yey
+    #[inline]
     pub fn set_background_color(&mut self, color: &RGBA) {
         self.background_color = color.clone();
     }
 
     /// set camera sets the matrix by witch are all shapes transformed so you can squeeze thinks
     /// however you like
-    pub fn set_camera(&mut self, mat: Mat) {
+    #[inline]
+    pub fn set_camera_matrix(&mut self, mat: Mat) {
         self.camera = mat;
     }
 
+    /// set_camera is more human readable way of setting viewport
+    #[inline]
+    pub fn set_camera(&mut self, position: Vect, zoom: f32) {
+        self.camera = Mat::IM.moved(position.inverted()).scaled(Vect::ZERO, zoom);
+    }
+
     /// clear clears the window
+    #[inline]
     pub fn clear(&self) {
         unsafe {
             gl::ClearColor(

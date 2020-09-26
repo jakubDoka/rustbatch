@@ -13,7 +13,7 @@ pub struct Sprite {
     loc_verts: [Vect; 4],
     verts: [Vect; 4],
     radius: f32,
-    trig_data: Vec<f32>,
+    trig_data: [f32; buffer::DATA_SIZE * VERTEX_COUNT],
     buff: [f32; buffer::DATA_SIZE],
 }
 
@@ -40,7 +40,7 @@ impl Sprite {
         Sprite {
             loc_verts: region.loc_verts(),
             verts: region.verts(),
-            trig_data: Vec::with_capacity(buffer::DATA_SIZE * VERTEX_COUNT),
+            trig_data: [0f32; buffer::DATA_SIZE * VERTEX_COUNT],
             buff: [0f32; buffer::DATA_SIZE],
             radius: region.radius(),
         }
@@ -58,15 +58,23 @@ impl Sprite {
             self.buff[2] = self.verts[i].x;
             self.buff[3] = self.verts[i].y;
 
-            self.trig_data.extend(&self.buff);
+            self.trig_data[i * buffer::DATA_SIZE..i * buffer::DATA_SIZE + buffer::DATA_SIZE]
+                .copy_from_slice(&self.buff);
         }
     }
 
-    /// draw "draws" texture to to batch. All it does is that it appends its vertex data transformed
-    /// by provided matrix and colored by provides color.
+    /// draw_with_matrix "draws" texture to to batch transformed by given matrix and multiplied
+    /// by given color
     #[inline]
-    pub fn draw(&mut self, batch: &mut Batch, mat: &Mat, color: &RGBA) {
+    pub fn draw_with_matrix(&mut self, batch: &mut Batch, mat: &Mat, color: &RGBA) {
         self.update_trig_data(mat, color);
-        batch.append(&mut self.trig_data, &mut Vec::from(PATTERN))
+        batch.append(&self.trig_data[..], &PATTERN, buffer::DATA_SIZE);
+    }
+
+    /// draw "draws" texture to to batch
+    #[inline]
+    pub fn draw(&mut self, batch: &mut Batch, position: Vect, scale: Vect, rotation: f32, color: &RGBA) {
+        self.update_trig_data(&Mat::new(position, scale, rotation), color);
+        batch.append(&self.trig_data[..], &PATTERN, buffer::DATA_SIZE);
     }
 }

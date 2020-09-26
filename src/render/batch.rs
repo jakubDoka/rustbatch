@@ -39,16 +39,14 @@ impl Batch {
     /// rectangle from it with pattern [0, 2, 3, 1, 2, 3]. If you don't know what i mean try to
     /// draw four points on paper, index them from 0 to 3 and connect them with lines in specified
     /// order.
-    pub fn append(&mut self, data: &mut Vec<f32>, pattern: &mut Vec<u32>) {
-        let l = self.vertices.len();
+    pub fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: usize) {
+        let l = (self.vertices.len()/vertex_size) as u32;
 
-        self.vertices.append(data);
+        self.vertices.extend(data);
 
-        for i in 0..pattern.len() {
-            pattern[i] += l as u32;
+        for i in pattern {
+            self.indices.push(*i + l);
         }
-
-        self.indices.append(pattern);
     }
 
     /// clear clears batch

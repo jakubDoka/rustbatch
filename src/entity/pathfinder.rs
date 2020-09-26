@@ -9,37 +9,35 @@ pub const D8: [(i32, i32); 8] = [(0, 1), (1, 0), (-1, 0), (0, -1), (1, 1), (1, -
 pub struct PathFinder {
     terminator: Sender<()>,
     data: Arc<Data>,
-    costs: Vec<Vec<i32>>,
 }
 
 impl PathFinder {
-    pub fn new(costs: Vec<Vec<i32>>) -> Self {
+    pub fn new(costs: &Vec<Vec<i32>>) -> Self {
         let (terminator, t) = channel();
         PathFinder{
             terminator,
-            data: Arc::new(Data::new(costs[0].len(), costs.len(), t)),
-            costs,
+            data: Arc::new(Data::new(costs[0].len(), costs.len(), t, costs)),
         }
     }
 
     pub fn update(&mut self, frontier: &Vec<(usize, usize)>, changes: &Vec<(usize, usize, i32)>) {
-        for change in changes.iter() {
-            self.costs[change.1][change.0] = change.2;
-        }
-
         let mut processor = match self.data.processor.try_lock(){
             Ok(guard) => guard,
             Err(_) => {
-                self.terminator.send(());
+                self.terminator.send(()).unwrap();
                 self.data.processor.lock().unwrap()
             }
         };
         processor.frontier.extend(frontier);
+
+        for change in changes.iter() {
+            processor.costs[change.1][change.0] = change.2;
+        }
+
         drop(processor);
 
-        let costs = self.costs.clone();
         let data = Arc::clone(&self.data);
-        thread::spawn(move || data.processor.lock().unwrap().update(&costs, &data.map, data.size.0, data.size.1));
+        thread::spawn(move || data.processor.lock().unwrap().update(&data.map, data.size.0, data.size.1));
     }
 
     pub fn get_step(&self, current: (usize, usize)) -> (usize, usize) {
@@ -75,7 +73,7 @@ pub struct Data {
 }
 
 impl Data {
-    pub fn new(w: usize, h: usize, terminator: Receiver<()>) -> Self {
+    pub fn new(w: usize, h: usize, terminator: Receiver<()>, costs: &Vec<Vec<i32>>) -> Self {
         let map = vec![vec![INFINITY; w]; h];
         Self {
             costs: map.clone(),
@@ -85,7 +83,7 @@ impl Data {
                 workspace: map,
                 frontier: Vec::with_capacity(w + h),
                 collector: Vec::with_capacity(w + h),
-
+                costs: costs.clone(),
             }),
             size: (w as i32, h as i32),
         }
@@ -95,13 +93,14 @@ impl Data {
 pub struct Processor {
     terminator: Receiver<()>,
     workspace: Vec<Vec<i32>>,
-    pub frontier: Vec<(usize, usize)>,
+    frontier: Vec<(usize, usize)>,
     collector: Vec<(usize, usize)>,
+    costs: Vec<Vec<i32>>,
 }
 
 impl Processor {
 
-    pub fn update(&mut self, costs: &Vec<Vec<i32>>, map: &Mutex<Vec<Vec<i32>>>, w: i32, h: i32) {
+    pub fn update(&mut self, map: &Mutex<Vec<Vec<i32>>>, w: i32, h: i32) {
 
         for row in self.workspace.iter_mut() {
             for tile in row.iter_mut() {
@@ -148,7 +147,7 @@ impl Processor {
 
                     con = (pos.0 as usize, pos.1 as usize);
 
-                    value = costs[con.1][con.0];
+                    value = self.costs[con.1][con.0];
                     if value == -1 {
                         continue
                     }
@@ -178,11 +177,11 @@ mod tests {
     fn update_test() {
         let costs = vec![vec![1; 10]; 10];
         let chan = channel();
-        let pro = Data::new(10, 10, chan.1);
+        let pro = Data::new(10, 10, chan.1, &costs);
         {
             pro.processor.lock().unwrap().frontier.push((0, 0));
         }
-        pro.processor.lock().unwrap().update(&costs, &pro.map, 10, 10);
+        pro.processor.lock().unwrap().update(&pro.map, 10, 10);
         for i in pro.map.lock().unwrap().iter() {
             println!("{:?}", i);
         }

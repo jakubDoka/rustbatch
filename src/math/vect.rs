@@ -1,5 +1,6 @@
 use std::ops;
 use std::slice::Iter;
+use crate::math::{clamp, clamp_f};
 
 macro_rules! vec_from {
     ($arg:ident) => {
@@ -25,6 +26,8 @@ macro_rules! handle {
     };
 }
 
+/// Vect is 2D vector and is used all over the place. I choose to use f32 because
+/// opengl also accepts only f32
 #[derive(Copy, Clone, Debug)]
 pub struct Vect{
     pub x: f32,
@@ -37,9 +40,12 @@ impl Vect{
     pub const RIGHT: Self = Self{x:1f32, y:0f32};
     pub const UP: Self = Self{x:0f32, y:1f32};
     pub const DOWN: Self = Self{x:0f32, y:-1f32};
+    pub const MAX: Self = Self{x: f32::MAX, y: f32::MAX};
+    pub const MIN: Self = Self{x: f32::MIN, y: f32::MIN};
 
+    /// average returns average of slice of vectors
     #[inline]
-    pub fn average(arr: &Vec<Vect>) -> Self {
+    pub fn average(arr: &[Vect]) -> Self {
         let len =  arr.len();
         if len == 0 {
             return Self::ZERO;
@@ -53,36 +59,49 @@ impl Vect{
         total / len as f32
     }
 
+    /// new is vector constructor
     #[inline]
     pub fn new(x: f32, y: f32) -> Self {
         Self{x, y}
     }
 
+    /// mirror returns homogenous vector
     #[inline]
     pub fn mirror(m: f32) -> Self {
         Self{x:m, y:m}
     }
 
+    /// unit returns vector of length 1.0 with given angle
     #[inline]
     pub fn unit(a: f32) -> Self {
         Self{x:a.cos(), y:a.sin()}
     }
 
+    /// rad is same as unit but you can also specify length
     #[inline]
-    fn rad(a: f32, l: f32) -> Self {
+    pub fn rad(a: f32, l: f32) -> Self {
         Self::unit(a) * l
     }
 
+    /// clamped clamps a vectors length
+    #[inline]
+    pub fn clamped(&self, min: f32, max: f32) -> Self {
+        Self::rad(self.ang(), clamp_f(self.len(), min, max))
+    }
+
+    /// ang returns vectors angle
     #[inline]
     pub fn ang(&self) -> f32 {
         self.y.atan2(self.x)
     }
 
+    /// len returns vectors length
     #[inline]
     pub fn len(&self) -> f32 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
 
+    /// norm returns normalized vector with length 1.0
     #[inline]
     pub fn norm(self) -> Self {
         let len = self.len();
@@ -92,41 +111,49 @@ impl Vect{
         self/len
     }
 
+    /// swp swaps x and y of vector
     #[inline]
     pub fn swp(self) -> Self {
         Self{x:self.y, y:self.x}
     }
 
+    /// rot rotates vector by a
     #[inline]
     pub fn rot(self, a: f32) ->Self {
         Self::rad(self.ang() + a, self.len())
     }
 
+    /// dist returns distance to other vector
     #[inline]
     pub fn dist(self, b: Self) -> f32 {
         (self - b).len()
     }
 
+    /// to returns vector from self to b
     #[inline]
     pub fn to(self, b: Self) -> Self {
         b - self
     }
 
+    /// dot returns vectors dot
     #[inline]
     pub fn dot(self, b: Self) -> f32 {
         self.x * b.x + self.y * b.y
     }
 
+    /// ang_to returns smallest angle between two vectors
     #[inline]
     pub fn ang_to(self, b: Self) -> f32 {
-        (self.dot( b)/(self.len()*b.len())).acos()
+        self.norm().dot( b.norm()).acos()
     }
 
+    /// trn applies closure to both x and y of a vector
     #[inline]
     pub fn trn<T:Fn(f32) -> f32>(&self, tr: T) -> Self {
         Self{x:tr(self.x), y:tr(self.y)}
     }
 
+    /// inverted inverts vector
     #[inline]
     pub fn inverted(&self) -> Self {
         Self{x: -self.x, y: -self.y}

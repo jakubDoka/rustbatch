@@ -5,9 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfe918c4-650d-4cde-a8d7-a96b6897f532" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/math/mat3.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/pathfinder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/pathfinder.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/scanner.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/scanner.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/math/mat.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/mat.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/rect.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/rect.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/vect.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/vect.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/render/batch.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/batch.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/render/shader.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/shader.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/render/sprite.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/sprite.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/render/window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/render/window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,12 +50,17 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ggl" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/math" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
     <property name="org.rust.disableDetachedFileInspectionC:/Users/jakub/Documents/programming/rust/src/rustbatch/build.rs" value="true" />
     <property name="org.rust.disableDetachedFileInspectionC:/Users/jakub/Documents/programming/rust/src/rustbatch/lib/tests/src/main.rs" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\src\math" />
+      <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\src" />
+      <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\src\render" />
       <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\src\entity" />
@@ -53,12 +68,8 @@
       <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\src" />
       <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\lib\math\src" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch\src" />
-      <recent name="C:\Users\jakub\Documents\programming\rust\src\rustbatch" />
-    </key>
   </component>
-  <component name="RunManager" selected="Cargo Command.Test math::vect::tests::average_test">
+  <component name="RunManager" selected="Cargo Command.Test entity::pathfinder::tests::update_test">
     <configuration name="Test entity::pathfinder2::tests::update_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
       <option name="command" value="test --package rustbatch --bin rustbatch entity::pathfinder2::tests::update_test -- --exact" />
@@ -83,9 +94,9 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test entity::scanner::tests::remove_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+    <configuration name="Test entity::pathfinder::tests::update_test" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
-      <option name="command" value="test --package rustbatch --bin rustbatch entity::scanner::tests::remove_test -- --exact" />
+      <option name="command" value="test --package rustbatch --lib entity::pathfinder::tests::update_test -- --exact" />
       <option name="allFeatures" value="false" />
       <option name="emulateTerminal" value="false" />
       <option name="backtrace" value="SHORT" />
@@ -121,11 +132,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo Command.Test entity::pathfinder::tests::update_test" />
         <item itemvalue="Cargo Command.Test math::vect::tests::average_test" />
         <item itemvalue="Cargo Command.Test entity::pathfinder2::tests::update_test" />
         <item itemvalue="Cargo Command.Test entity::pathfinder::tests::map_test" />
         <item itemvalue="Cargo Command.Test scanner::tests" />
-        <item itemvalue="Cargo Command.Test entity::scanner::tests::remove_test" />
       </list>
     </recent_temporary>
   </component>
@@ -162,38 +173,38 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="413" y="116" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.738@0.0.1366.738" timestamp="1600697371704" />
-    <state x="463" y="124" key="FileChooserDialogImpl" timestamp="1600688913052">
+    <state x="463" y="124" key="FileChooserDialogImpl" timestamp="1601060436215">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="463" y="124" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1600688913052" />
-    <state width="1323" height="270" key="GridCell.Tab.0.bottom" timestamp="1600947468105">
+    <state x="463" y="124" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1601060436215" />
+    <state width="1323" height="373" key="GridCell.Tab.0.bottom" timestamp="1601109682825">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
-    <state width="1323" height="270" key="GridCell.Tab.0.center" timestamp="1600947468105">
+    <state width="1323" height="373" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1601109682825" />
+    <state width="1323" height="373" key="GridCell.Tab.0.center" timestamp="1601109682825">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
-    <state width="1323" height="270" key="GridCell.Tab.0.left" timestamp="1600947468105">
+    <state width="1323" height="373" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1601109682825" />
+    <state width="1323" height="373" key="GridCell.Tab.0.left" timestamp="1601109682824">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
-    <state width="1323" height="270" key="GridCell.Tab.0.right" timestamp="1600947468105">
+    <state width="1323" height="373" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1601109682824" />
+    <state width="1323" height="373" key="GridCell.Tab.0.right" timestamp="1601109682825">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="270" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1600947468105" />
+    <state width="1323" height="373" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1601109682825" />
     <state x="492" y="283" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600160120328">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="492" y="283" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.738@0.0.1366.738" timestamp="1600160120328" />
-    <state x="390" y="102" width="585" height="534" key="find.popup" timestamp="1600946475396">
+    <state x="390" y="102" width="585" height="592" key="find.popup" timestamp="1601110493271">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="390" y="102" width="585" height="534" key="find.popup/0.0.1366.738@0.0.1366.738" timestamp="1600946475396" />
-    <state x="339" y="165" key="run.anything.popup" timestamp="1600456575126">
+    <state x="390" y="102" width="585" height="592" key="find.popup/0.0.1366.738@0.0.1366.738" timestamp="1601110493271" />
+    <state x="339" y="165" key="run.anything.popup" timestamp="1600967861076">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="339" y="165" key="run.anything.popup/0.0.1366.738@0.0.1366.738" timestamp="1600456575126" />
+    <state x="339" y="165" key="run.anything.popup/0.0.1366.738@0.0.1366.738" timestamp="1600967861076" />
     <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1600694386496">
       <screen x="0" y="0" width="1366" height="738" />
     </state>

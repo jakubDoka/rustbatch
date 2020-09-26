@@ -20,18 +20,18 @@ impl<T: IDType> Scanner<T> {
     }
 
     #[inline]
-    pub fn get_coord(&self, pos: &Vect) -> (usize, usize) {
+    pub fn get_coord(&self, pos: Vect) -> (usize, usize) {
         (clamp((pos.x / self.tile_size.x) as usize, 0, self.w-1), clamp((pos.y/self.tile_size.y) as usize, 0, self.h-1))
     }
 
     #[inline]
-    pub fn insert(&mut self, pos: &Vect, id: T) {
-        let (x, y) = self.get_coord(&pos);
+    pub fn insert(&mut self, pos: Vect, id: T) {
+        let (x, y) = self.get_coord(pos);
         self.map[y][x].insert(id);
     }
 
     #[inline]
-    pub fn remove(&mut self, pos: &Vect, id: T) -> bool {
+    pub fn remove(&mut self, pos: Vect, id: T) -> bool {
         let (x, y) = self.get_coord(pos);
         self.map[y][x].remove(&id)
 
@@ -51,7 +51,7 @@ impl<T: IDType> Scanner<T> {
 
 
     #[inline]
-    pub fn update(&mut self, old: &Vect, new: &Vect, id: T) -> bool {
+    pub fn update(&mut self, old: Vect, new: Vect, id: T) -> bool {
         let old = self.get_coord(old);
         let new = self.get_coord(new);
 
@@ -69,8 +69,8 @@ impl<T: IDType> Scanner<T> {
 
     #[inline]
     pub fn query(&self, rect: &Rect, collector: &mut Vec<T>) {
-        let mut min = self.get_coord(&rect.min);
-        let mut max = self.get_coord(&rect.max);
+        let mut min = self.get_coord(rect.min);
+        let mut max = self.get_coord(rect.max);
         min = (
             if min.0 == 0 {0} else {clamp(min.0-1, 0, self.w)},
             if min.1 == 0 {0} else {clamp(min.1-1, 0, self.h)}
@@ -84,7 +84,7 @@ impl<T: IDType> Scanner<T> {
     }
 
     #[inline]
-    pub fn query_point(&self, pos: &Vect, collector: &mut Vec<T>) {
+    pub fn query_point(&self, pos: Vect, collector: &mut Vec<T>) {
         let mut pos = self.get_coord(pos);
         let min = (
             if pos.0 == 0 {0} else {clamp(pos.0-1, 0, self.w)},
@@ -122,7 +122,7 @@ mod tests {
         let mut map: Scanner<usize> = Scanner::new(10, 10, Vect::new(100f32, 100f32));
         let mut rng = rand::thread_rng();
         for i in 0..100 {
-            map.insert(&Vect::new(rng.gen::<f32>()*1000f32, rng.gen::<f32>()*1000f32), i);
+            map.insert(Vect::new(rng.gen::<f32>()*1000f32, rng.gen::<f32>()*1000f32), i);
         }
 
         assert_eq!(100 as usize, map.get_shape_count());

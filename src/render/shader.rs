@@ -40,7 +40,8 @@ impl Shader {
             out vec2 region;\n
             out vec4 color;\n\n
 
-            uniform mat4 camera;\n
+            uniform mat4 camera;\n\
+            uniform mat4 model;
             uniform vec2 texture_size;\n
             uniform vec2 view_size;\n\n
 
