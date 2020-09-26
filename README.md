@@ -1,3 +1,4 @@
+<p align="center"><img src="assets/logo.png"></p>
 # rustbatch
 
 This is my attempt to make 2D game library in rust. My main focus is performance and library provides fast solutions for some bottle necks of games like collizion
