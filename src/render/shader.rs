@@ -7,7 +7,6 @@ use crate::render::create_whitespace_cstring_with_len;
 
 /// Shader is wrapper for opengl shader
 /// it holds only pointer of the shader so you can freely clone ti
-#[derive(Clone)]
 pub struct Shader {
     id: gl::types::GLuint,
 }

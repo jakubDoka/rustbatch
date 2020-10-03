@@ -75,7 +75,7 @@ impl Sprite {
     #[inline]
     pub fn draw_with_matrix<T: Target>(&mut self, target: &mut T, mat: &Mat, color: &RGBA) {
         self.update_trig_data(mat, color);
-        target.append(&self.trig_data, &Self::PATTERN, buffer::DEFAULT_VERTEX_SIZE);
+        target.append(&self.trig_data, &Self::PATTERN, buffer::DEFAULT_VERTEX_SIZE, None, None, &None);
     }
 
     /// draw "draws" texture to to batch

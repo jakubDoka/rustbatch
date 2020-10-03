@@ -41,7 +41,6 @@ pub const COLOR: Vertex = Vertex{size: 4};
 pub const DEFAULT_VERTEX_SIZE: u32 = 8;
 
 /// Buffer is used for customizing how is the vertex data processed
-#[derive(Clone)]
 pub struct Buffer {
     pub(crate) data_size: usize,
     vbo: gl::types::GLuint,
@@ -61,8 +60,13 @@ impl Buffer {
 
     /// new returns new buffer from Vertexes
     pub fn new(vertexes: &[Vertex]) -> Self {
-        if vertexes.len() > 16 {
-            panic!("opengl permits only 16 vertexes")
+        let mut max = 0;
+        unsafe {
+            gl::GetIntegerv(gl::MAX_VERTEX_ATTRIBS, &mut max);
+        }
+
+        if vertexes.len() > max as usize {
+            panic!("opengl permits only {} vertex attributes bat you supplied {}.", max, vertexes.len());
         }
 
         let mut vao: gl::types::GLuint = 0;
@@ -107,13 +111,13 @@ impl Buffer {
     }
 
     /// set_vertices sets vertices and adds default indices so you can draw
-    pub fn set_vertices(&self, vertices: &Vec<f32>) {
+    pub fn set_vertices(&self, vertices: &[f32]) {
         let len = vertices.len();
-        self.set_vertices_and_indices(vertices, &(0u32..len as u32).collect());
+        self.set_vertices_and_indices(vertices, &((0u32..len as u32).collect::<Vec<u32>>()));
     }
 
     /// set_vertices_and_indices sets vertices and custom indices
-    pub fn set_vertices_and_indices(&self, vertices: &Vec<f32>, indices: &Vec<u32>) {
+    pub fn set_vertices_and_indices(&self, vertices: &[f32], indices: &[u32]) {
         self.bind();
         unsafe {
             gl::BindBuffer(gl::ARRAY_BUFFER, self.vbo);

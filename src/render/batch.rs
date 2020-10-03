@@ -3,7 +3,7 @@ use crate::render::texture::Texture;
 use crate::render::buffer::Buffer;
 
 pub trait Target {
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32);
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, program: Option<&Program>, texture: Option<&Texture>, buffer: &Option<Buffer>);
 }
 
 pub struct VertexData {
@@ -27,13 +27,13 @@ impl VertexData {
 
     fn error_check(&self, vertex_size: u32) {
         if self.vertex_size != vertex_size {
-            panic!("incorrect vertex size, batch's buffer accepts only vertex of size {} but \
-               you inputted {}", self.vertex_size, vertex_size);
+            panic!("incorrect vertex size, this vertex data accepts only vertex size {}, but \
+               you inputted vertex data with vertex size {}", self.vertex_size, vertex_size);
         }
     }
 
     pub fn draw<T: Target>(&self, target: &mut T) {
-        target.append(&self.vertices, &self.indices, self.vertex_size)
+        target.append(&self.vertices, &self.indices, self.vertex_size, None, None, &None);
     }
 
     pub fn clear(&mut self) {
@@ -44,7 +44,7 @@ impl VertexData {
 
 impl Target for VertexData {
     #[inline]
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32) {
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, _: Option<&Program>, _: Option<&Texture>, _: &Option<Buffer>) {
         self.error_check(vertex_size);
 
         let offset = self.vertices.len() as u32/ vertex_size;
@@ -100,6 +100,10 @@ impl Batch {
         Batch{texture, program, data, buffer}
     }
 
+    pub fn draw<T: Target>(&self, target: &mut T) {
+        target.append(&self.data.vertices, &self.data.indices, self.data.vertex_size, Some(&self.program), Some(&self.texture), &self.buffer)
+    }
+
     /// clear clears batch
     #[inline]
     pub fn clear(&mut self) {
@@ -120,7 +124,7 @@ impl Target for Batch {
     /// panic. This is mainly to prevent confusion in case of providing incorrect vertex data
     /// structure.
     #[inline]
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32) {
-        self.data.append(data, pattern, vertex_size);
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, _: Option<&Program>, _: Option<&Texture>, _: &Option<Buffer>) {
+        self.data.append(data, pattern, vertex_size, None, None, &None);
     }
 }

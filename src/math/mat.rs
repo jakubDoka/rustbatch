@@ -41,7 +41,7 @@ impl Mat {
     }
 
     #[inline]
-    pub(crate) fn transform_from_window_space(mut self, size: (u32, u32)) -> Self {
+    pub(crate) fn transform_from_window_space(mut self, size: (i32, i32)) -> Self {
         self.c /= vect!(size.0, size.1)/2f32;
         self
     }

@@ -44,7 +44,6 @@ mod tests {
 
     #[test]
     fn curve_test() {
-        println!("{:?}" ,Curve::LINEAR_INCREASE.get_p(0.5));
-        println!("{:?}" ,Curve::LINEAR_INCREASE.get_point(0.5))
+        println!("{:?}" ,Curve::LINEAR_INCREASING.get_point(0.5))
     }
 }

@@ -13,6 +13,9 @@ use crate::render::batch::Batch;
 use crate::math::rgba::RGBA;
 use self::sdl2::{EventPump, Sdl};
 use crate::math::rect::Rect;
+use crate::render::canvas::Canvas;
+use crate::render::texture::TextureSize;
+use crate::WHITE;
 
 /// Window core feature of this library, everything starts here. Only after creating window you can
 /// safely use other parts of render module because window also calls gl::load_with() witch makes
@@ -20,10 +23,8 @@ use crate::math::rect::Rect;
 /// it makes managing gale viewport lot nicer in my opinion. Window also implements Deref to deref
 /// inner sdl window.
 pub struct Window {
-    buffer: Buffer,
+    pub canvas: Canvas,
     window: video::Window,
-    camera: Mat,
-    background_color: RGBA
 }
 
 impl Deref for Window {
@@ -76,37 +77,23 @@ impl Window {
             gl::Enable(gl::BLEND);
             gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
         }
+        let (w, h) = window.size();
 
-        (Window{window, buffer: buffer(), camera: Mat::IM, background_color: rgba::BLACK}, sdl.event_pump().unwrap(), gl, sdl, video_subsystem)
+        (Window{canvas: Canvas::new(TextureSize::new(w as i32, h as i32)) ,window}, sdl.event_pump().unwrap(), gl, sdl, video_subsystem)
+    }
+
+    pub fn render(&mut self) {
+        self.canvas.redraw(&Mat::IM, &WHITE);
+        self.canvas.render();
     }
 
     /// update updates window, just call it at the end
-    pub fn update(& self) {
-        let (w, h) = self.size();
-        unsafe {
-            gl::Viewport(0, 0, w as i32, h as i32);
+    pub fn update(&mut self) {
+        let size = self.size();
+        if size != self.canvas.size() {
+            self.canvas.resize(TextureSize::new(size.0 as i32, size.1 as i32))
         }
         self.gl_swap_window();
-    }
-
-    /// draw takes batch and draws it to screen. this function modifies uniforms of vertex shader
-    pub fn draw(&self, batch: &Batch) {
-        let (w, h) = self.size();
-
-        batch.program.set_camera(self.camera.transform_from_window_space((w, h)));
-        batch.program.set_view_size(vect!(w, h));
-        batch.program.bind();
-        batch.texture.bind();
-
-        let buff = match &batch.buffer {
-            Some(buff) => buff,
-            None => &self.buffer,
-        };
-
-        buff.set_vertices_and_indices(&batch.data.vertices, &batch.data.indices);
-        buff.bind();
-        buff.draw(batch.data.indices.len());
-
     }
 
     /// get_viewport_rect returns rectangle that whole screen fits in and that is even if you
@@ -124,34 +111,14 @@ impl Window {
         ];
 
         for i in 0..corners.len() {
-            corners[i] = self.camera.unprj(corners[i]);
+            corners[i] = self.canvas.camera.unprj(corners[i]);
         }
 
         Rect::bounds_for(&corners)
     }
 
-    /// set_background_color sets background color yey
-    #[inline]
-    pub fn set_background_color(&mut self, color: &RGBA) {
-        self.background_color = color.clone();
-    }
-
-    /// set camera sets the matrix by witch are all shapes transformed so you can squeeze thinks
-    /// however you like
-    #[inline]
-    pub fn set_camera_matrix(&mut self, mat: Mat) {
-        self.camera = mat;
-    }
-
-    /// set_camera is more human readable way of setting viewport
-    #[inline]
-    pub fn set_camera(&mut self, position: Vect, zoom: f32) {
-        self.camera = Mat::IM.moved(position.inverted()).scaled(Vect::ZERO, zoom);
-    }
-
-    /// clear clears the window
     #[inline]
     pub fn clear(&self) {
-        super::clear(&self.background_color);
+        self.canvas.clear();
     }
 }

@@ -3,15 +3,32 @@ use image::{DynamicImage, GenericImageView, ImageError, ImageBuffer, Pixel};
 use crate::math::rect::Rect;
 use crate::math::vect::Vect;
 use std::path::Path;
+use std::ptr::null;
+
+/// TextureSize is for verifying users input.
+pub struct TextureSize(i32, i32);
+
+impl TextureSize {
+    pub fn new(w: i32, h: i32) -> Self {
+        let mut max = 0;
+        unsafe {
+            gl::GetIntegerv(gl::MAX_TEXTURE_SIZE, &mut max);
+        }
+        if w > max || h > max {
+            panic!("opengl supports only texture sizes up to {}x{}, you requested {}x{}", max, max, w, h);
+        }
+        Self(w, h)
+    }
+}
 
 #[derive(Copy, Clone)]
-pub struct Config {
+pub struct TextureConfig {
     format: gl::types::GLenum,
     filtering: gl::types::GLenum,
 }
 
-impl Config {
-    pub const DEFAULT: Self = Config{ filtering: gl::NEAREST, format: gl::RGBA };
+impl TextureConfig {
+    pub const DEFAULT: Self = TextureConfig{ filtering: gl::NEAREST, format: gl::RGBA };
 
     pub fn new(format: gl::types::GLenum, filtering: gl::types::GLenum) -> Self {
         Self{ format, filtering }
@@ -20,36 +37,35 @@ impl Config {
 
 /// Texture is wrapper for opengl texture object
 /// its just an unsafe pointer with useful methods
-#[derive(Clone)]
 pub struct Texture {
+    clone: bool,
     id: gl::types::GLuint,
-    config: Config,
+    config: TextureConfig,
     pub(crate) w: i32,
     pub(crate) h: i32,
 }
 
 impl Texture {
-    pub const NONE: Self = Self{ id: 0, w: 0, h: 0 , config: Config{format: 0, filtering: 0}};
+    pub const NONE: Self = Self{ id: 0, w: 0, h: 0 , config: TextureConfig{format: 0, filtering: 0}, clone: false};
 
     /// default creates what i consider default texture from provided path
     /// (no interpolation, alfa channel)
     #[inline]
     pub fn default(path: &str) -> Result<Texture, ImageError> {
-        Self::new(path, Config::DEFAULT)
+        Self::new(path, TextureConfig::DEFAULT)
     }
 
-    /// empty texture creates texture with all pixels set to 0
-    /// its useful if you want to draw to it. dims stends for how many color channels
-    /// you have: RGB = 3, RGBA = 4
+    /// empty texture creates texture with all pixels set to 0.
+    /// its useful mainly for canvas.
     #[inline]
-    pub fn empty_texture(w: i32, h: i32, dims: i32, config: Config) -> Self {
-        Self::from_raw_data(w, h, vec![0u8; (w * h * dims) as usize].as_ptr() as *const u8, config, false)
+    pub fn empty_texture(size: TextureSize, config: TextureConfig) -> Self {
+        Self::from_raw_data(size, null(), config, false)
     }
 
     /// new creates new texture. for mode you have two options:
     /// - gl::NEAREST - it makes pixels visible
     /// - gl::LINEAR - it linearly interpolates between pixels and generally looks little ugly
-    pub fn new<P: AsRef<Path>>(path: P, config: Config) -> Result<Texture, ImageError> {
+    pub fn new<P: AsRef<Path>>(path: P, config: TextureConfig) -> Result<Texture, ImageError> {
         let img = image::open(path)?.flipv();
 
         Ok(Self::from_img(&img, config))
@@ -58,12 +74,12 @@ impl Texture {
     /// from_img returns texture from provided DynamicImage in case you want to do some pre processing
     /// on texture
     #[inline]
-    pub fn from_img(img: &DynamicImage ,config: Config) -> Texture {
-        Self::from_raw_data(img.width() as i32 ,img.height() as i32, img.to_bytes().as_ptr(), config, true)
+    pub fn from_img(img: &DynamicImage ,config: TextureConfig) -> Texture {
+        Self::from_raw_data(TextureSize::new(img.width() as i32 ,img.height() as i32) , img.to_bytes().as_ptr(), config, true)
     }
 
     /// its just lower level function, it may come handy
-    pub fn from_raw_data(w: i32, h: i32, bytes: *const u8, config: Config, mipmap: bool) -> Texture {
+    pub fn from_raw_data(size: TextureSize, bytes: *const u8, config: TextureConfig, mipmap: bool) -> Texture {
         let mut id: gl::types::GLuint = 0;
         unsafe {
             gl::GenTextures(1, &mut id);
@@ -77,8 +93,8 @@ impl Texture {
                 gl::TEXTURE_2D,
                 0,
                 config.format as i32,
-                w as i32,
-                h as i32,
+                size.0,
+                size.1,
                 0,
                 config.format,
                 gl::UNSIGNED_BYTE,
@@ -87,7 +103,32 @@ impl Texture {
             if mipmap { gl::GenerateMipmap(gl::TEXTURE_2D); }
         }
 
-        Texture{id, w, h , config}
+        Texture{id, w: size.0, h: size.1 , config, clone: false}
+    }
+
+    /// resize_and_clear si here purely for resizing canvas textures, otherwise not very useful
+    /// because it also erases the content of a texture.
+    pub fn resize_and_clear(&mut self, size: TextureSize) {
+        self.w = size.0;
+        self.h = size.1;
+
+        unsafe {
+            gl::BindTexture(gl::TEXTURE_2D, self.id);
+
+            gl::TexImage2D(
+                gl::TEXTURE_2D,
+                0,
+                self.config.format as i32,
+                self.w,
+                self.h,
+                0,
+                self.config.format,
+                gl::UNSIGNED_BYTE,
+                null(),
+            );
+        }
+
+
     }
 
     /// to image takes texture from gpu memory to back to you so you can save texture
@@ -135,8 +176,23 @@ impl Texture {
     }
 }
 
+impl Clone for Texture {
+    fn clone(&self) -> Self {
+        Self {
+            id: self.id,
+            clone: true,
+            h: self.h,
+            w: self.w,
+            config: self.config
+        }
+    }
+}
+
 impl Drop for Texture {
     fn drop(&mut self) {
+        if self.clone {
+            return
+        }
         unsafe {
             gl::DeleteTextures(1, &mut self.id)
         }

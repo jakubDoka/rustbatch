@@ -24,7 +24,7 @@ use crate::render::particle::system::Particle;
 ///             .unwrap()
 ///     });
 ///
-///     window.set_background_color(&[0.5f32, 0.5f32, 0.5f32, 1f32]);
+///     window.canvas.set_background_color(&[0.5f32, 0.5f32, 0.5f32, 1f32]);
 ///
 ///     //creating shape with 10 edges
 ///     let mut shape = SymmetricShape::new(10, 0f32);
@@ -45,16 +45,16 @@ use crate::render::particle::system::Particle;
 ///
 ///         let delta = fps.increase(0f32);
 ///
-///         window.clear();
+///         window.canvas.clear();
 ///
 ///         shape.draw(&mut batch, &Mat::IM.scaled(Vect::ZERO, 100f32), &WHITE, &BLACK);
 ///
-///         window.draw(&batch);
+///         batch.draw(&mut window.canvas);
 ///
 ///
 ///         batch.clear();
 ///
-///
+///         window.render();
 ///         window.update();
 ///     }
 /// }
@@ -111,7 +111,7 @@ impl SymmetricShape {
             self.buffer.extend(outer_color);
         }
 
-        target.append(&self.buffer, &self.indices, 6);
+        target.append(&self.buffer, &self.indices, 6, None, None, &None);
     }
 }
 

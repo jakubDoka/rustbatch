@@ -9,6 +9,7 @@ pub mod sprite;
 pub mod window;
 pub mod particle;
 pub mod preprocessing;
+pub mod canvas;
 
 use std::ffi::CString;
 use crate::math::rgba::RGBA;

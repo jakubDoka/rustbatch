@@ -14,7 +14,6 @@ use crate::math::rgba::RGBA;
 /// for setting them but you can also define new ones because there is lot of variants.
 /// Already defined setters should guid you.
 /// Note that even though you can clone Program you are just cloning pointer to program.
-#[derive(Clone)]
 pub struct Program {
     id: gl::types::GLuint,
 }

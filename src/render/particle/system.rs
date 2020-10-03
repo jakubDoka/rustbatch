@@ -88,7 +88,7 @@ pub struct Dynamic {
 
 
 #[derive(Clone)]
-pub struct Config {
+pub struct ParticleConfig {
     pub rotation_relative_to_spawn_direction: bool,
     pub inverted: bool,
     pub gravity: Vect,
@@ -114,7 +114,7 @@ impl Generator for Gen {
 
 struct Inner {
     random: ThreadRng,
-    config: Config,
+    config: ParticleConfig,
     objects: Vec<Object>,
     generator: Box<dyn Generator>,
     pos: Vect,
@@ -141,13 +141,13 @@ impl Inner {
         obj
     }
 }
-/// System is particle system. You can use custom shapes and position generator. other way to customize
+/// ParticleSystem is particle system. You can use custom shapes and position generator. other way to customize
 /// particles it though config.
 ///
 /// # example
 /// ```
 /// use rustbatch::{Window, Batch, Vect, FPS};
-/// use rustbatch::render::particle::system::{System, Initial, RandomizedProperty, Dynamic, Property};
+/// use rustbatch::render::particle::system::{ParticleSystem, Initial, RandomizedProperty, Dynamic, Property};
 /// use rustbatch::render::particle::system;
 /// use rustbatch::math::rgba::{Graph, GraphPoint};
 /// use std::f32::consts::PI;
@@ -156,7 +156,7 @@ impl Inner {
 ///
 /// let (mut window, mut pump, _f, _g, _r) = Window::new(|sys| sys.window("segmentation", 400, 400).opengl().build().unwrap());
 ///     let mut batch = Batch::no_texture();
-///     let mut sys = System::no_texture(system::Config {
+///     let mut sys = ParticleSystem::no_texture(system::ParticleConfig {
 ///         rotation_relative_to_spawn_direction: true,
 ///         inverted: false,
 ///
@@ -194,8 +194,6 @@ impl Inner {
 ///
 ///         window.clear();
 ///
-///
-///
 ///         sys.update(delta);
 ///
 ///         sys.spawn(10);
@@ -204,15 +202,16 @@ impl Inner {
 ///
 ///         sys.clear();
 ///
-///         window.draw(&batch);
+///         batch.draw(&mut window.canvas);
 ///
 ///         batch.clear();
 ///
+///         window.render();
 ///         window.update();
 ///
 ///     }
 /// ```
-pub struct System {
+pub struct ParticleSystem {
     shape: Box<dyn Particle>,
     progress: f32,
     vertex_data: VertexData,
@@ -220,16 +219,16 @@ pub struct System {
     inner: Inner,
 }
 
-impl System {
-    pub fn new(config: Config, sprite: Sprite) -> Self {
+impl ParticleSystem {
+    pub fn new(config: ParticleConfig, sprite: Sprite) -> Self {
         Self::customized(VertexData::new(), config, Box::new(sprite), Box::new(Gen {}))
     }
 
-    pub fn no_texture(config: Config, shape: Box<dyn Particle>) -> Self {
+    pub fn no_texture(config: ParticleConfig, shape: Box<dyn Particle>) -> Self {
         Self::customized(VertexData::no_texture(), config, shape, Box::new(Gen {}))
     }
 
-    pub fn customized(vertex_data: VertexData, config: Config, shape: Box<dyn Particle>, generator: Box<dyn Generator>) -> Self {
+    pub fn customized(vertex_data: VertexData, config: ParticleConfig, shape: Box<dyn Particle>, generator: Box<dyn Generator>) -> Self {
         Self {
             inner: Inner {
                 random: rand::thread_rng(),
@@ -287,7 +286,7 @@ impl System {
 
     #[inline]
     pub fn draw<T: Target>(&self, target: &mut T) {
-        target.append(&self.vertex_data.vertices, &self.vertex_data.indices, self.vertex_data.vertex_size)
+        target.append(&self.vertex_data.vertices, &self.vertex_data.indices, self.vertex_data.vertex_size, None, None, &None)
     }
 
     #[inline]
