@@ -3,18 +3,18 @@ use crate::math::vect::Vect;
 use std::collections::HashSet;
 use std::hash::BuildHasherDefault;
 use hashers::fnv::FNV1aHasher32;
-use crate::entity::id_generator::IDType;
 use crate::entity::{FastHash};
 use crate::math::clamp;
+use std::hash::Hash;
 
-pub struct Scanner<T: IDType = u64> {
+pub struct Scanner<T: Hash + Eq + Copy + Clone> {
     pub map: Vec<Vec<HashSet<T, FastHash>>>,
     tile_size: Vect,
     w: usize,
     h: usize,
 }
 
-impl<T: IDType> Scanner<T> {
+impl<T: Hash + Eq + Copy + Clone> Scanner<T> {
     pub fn new(w: usize, h: usize, tile_size: Vect) -> Self {
         Scanner{map: vec![vec![HashSet::with_hasher(BuildHasherDefault::<FNV1aHasher32>::default()); w]; h], tile_size, w, h}
     }
@@ -85,7 +85,7 @@ impl<T: IDType> Scanner<T> {
 
     #[inline]
     pub fn query_point(&self, pos: Vect, collector: &mut Vec<T>) {
-        let mut pos = self.get_coord(pos);
+        let pos = self.get_coord(pos);
         let min = (
             if pos.0 == 0 {0} else {clamp(pos.0-1, 0, self.w)},
             if pos.1 == 0 {0} else {clamp(pos.1-1, 0, self.h)}

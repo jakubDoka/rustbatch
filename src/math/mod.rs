@@ -1,4 +1,5 @@
-
+pub mod curve;
+pub mod base;
 pub mod rgba;
 pub mod mat;
 pub mod rect;

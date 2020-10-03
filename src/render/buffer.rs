@@ -4,41 +4,46 @@
 /// Vertex is vertex representation for opengl that is bit more convenient to work with.
 /// Using custom Vertexes also means you have to use custom vertex shader.
 /// - size can be from 1 to 4
-/// - offset depends on how much size vertexes before this vertex takes so if first vertex is of
-/// size 4 second vertex will have offset of 4
-/// - location is number between 0 to 16 and it affects how you access data from vertex shader
-/// For better of how should layout look checkout vertex constants in this module
+/// For better of how should layout look like, checkout vertex constants in this module
 pub struct Vertex {
-    pub size: i32,
-    pub offset: usize,
-    pub location: u32,
+    size: usize,
 }
 
 impl Vertex {
-    fn apply(&self) {
+    pub fn new(size: usize) -> Vertex {
+        if size > 4 {
+            panic!("illegal vertex size, size can be from 1 to 4");
+        }
+
+        Vertex{size}
+    }
+
+    fn apply(&self, offset: usize, location: u32, total_size: usize) {
         unsafe {
-            gl::EnableVertexAttribArray(self.location);
+            gl::EnableVertexAttribArray(location);
             gl::VertexAttribPointer(
-                self.location,
-                self.size,
+                location,
+                self.size as i32,
                 gl::FLOAT,
                 gl::FALSE,
-                (DATA_SIZE * std::mem::size_of::<f32>()) as gl::types::GLint,
-                (self.offset * std::mem::size_of::<f32>()) as *const gl::types::GLvoid,
+                (total_size * std::mem::size_of::<f32>()) as gl::types::GLint,
+                (offset * std::mem::size_of::<f32>()) as *const gl::types::GLvoid,
             );
         }
     }
 }
 
 
-pub const POSITION: Vertex = Vertex{size: 2, location: 0, offset: 0};
-pub const TEXTURE_REGION: Vertex = Vertex{size: 2, location: 1, offset: 2};
-pub const COLOR: Vertex = Vertex{size: 4, location: 2, offset: 4};
-pub const DATA_SIZE: usize = (POSITION.size + TEXTURE_REGION.size + COLOR.size) as usize;
+pub const POSITION: Vertex = Vertex{size: 2};
+pub const TEXTURE_REGION: Vertex = Vertex{size: 2};
+pub const COLOR: Vertex = Vertex{size: 4};
+
+pub const DEFAULT_VERTEX_SIZE: u32 = 8;
 
 /// Buffer is used for customizing how is the vertex data processed
 #[derive(Clone)]
 pub struct Buffer {
+    pub(crate) data_size: usize,
     vbo: gl::types::GLuint,
     ebo: gl::types::GLuint,
     vao: gl::types::GLuint,
@@ -50,8 +55,16 @@ impl Buffer {
         Self::new(&[POSITION, TEXTURE_REGION, COLOR])
     }
 
+    pub fn no_texture() -> Self {
+        Self::new(&[POSITION, COLOR])
+    }
+
     /// new returns new buffer from Vertexes
     pub fn new(vertexes: &[Vertex]) -> Self {
+        if vertexes.len() > 16 {
+            panic!("opengl permits only 16 vertexes")
+        }
+
         let mut vao: gl::types::GLuint = 0;
         let mut vbo: gl::types::GLuint = 0;
         let mut ebo: gl::types::GLuint = 0;
@@ -62,22 +75,32 @@ impl Buffer {
             gl::GenBuffers(1, &mut ebo);
         }
 
-        let buff = Buffer{vbo, vao, ebo};
-        buff.set_used();
+        let mut data_size = 0;
+        for v in vertexes {
+            data_size += v.size;
+        }
+
+        let buff = Buffer{vbo, vao, ebo, data_size};
+
+        buff.bind();
 
         unsafe {
             gl::BindBuffer(gl::ARRAY_BUFFER, buff.vbo);
         }
 
-        for v in vertexes {
-            v.apply()
+
+
+        let mut offset = 0;
+        for (i, v) in vertexes.iter().enumerate() {
+            v.apply(offset, i as u32, data_size);
+            offset += v.size;
         }
 
         buff
     }
 
-    /// set_used uses the buffer. you still have to call draw afterwards
-    pub fn set_used(&self) {
+    /// bind uses the buffer. you still have to call draw afterwards
+    pub fn bind(&self) {
         unsafe {
             gl::BindVertexArray(self.vao);
         }
@@ -91,7 +114,7 @@ impl Buffer {
 
     /// set_vertices_and_indices sets vertices and custom indices
     pub fn set_vertices_and_indices(&self, vertices: &Vec<f32>, indices: &Vec<u32>) {
-        self.set_used();
+        self.bind();
         unsafe {
             gl::BindBuffer(gl::ARRAY_BUFFER, self.vbo);
             gl::BufferData(
@@ -123,9 +146,9 @@ impl Buffer {
 impl Drop for Buffer {
     fn drop(&mut self) {
         unsafe {
-            gl::DeleteBuffers(1, self.ebo as *const u32);
-            gl::DeleteBuffers(1, self.vbo as *const u32);
-            gl::DeleteVertexArrays(1, self.vao as *const u32);
+            gl::DeleteBuffers(1, &mut self.ebo);
+            gl::DeleteBuffers(1, &mut self.vbo);
+            gl::DeleteVertexArrays(1, &mut self.vao);
         }
     }
 }

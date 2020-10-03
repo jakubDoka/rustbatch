@@ -42,7 +42,7 @@ impl Mat {
 
     #[inline]
     pub(crate) fn transform_from_window_space(mut self, size: (u32, u32)) -> Self {
-        self.c /= Vect::u32(size.0, size.1)/2f32;
+        self.c /= vect!(size.0, size.1)/2f32;
         self
     }
 
@@ -126,9 +126,9 @@ impl Mat {
 
 #[cfg(test)]
 mod tests {
-    use std::f32::consts::PI;
 
-    use crate::math::{mat, vect};
+
+
     use crate::math::vect::*;
     use crate::Mat;
 

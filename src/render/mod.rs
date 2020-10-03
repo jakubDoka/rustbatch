@@ -7,8 +7,12 @@ pub mod program;
 pub mod texture;
 pub mod sprite;
 pub mod window;
+pub mod particle;
+pub mod preprocessing;
 
 use std::ffi::CString;
+use crate::math::rgba::RGBA;
+
 fn create_whitespace_cstring_with_len(len: usize) -> CString {
     // allocate buffer of correct size
     let mut buffer: Vec<u8> = Vec::with_capacity(len + 1);
@@ -18,7 +22,10 @@ fn create_whitespace_cstring_with_len(len: usize) -> CString {
     unsafe { CString::from_vec_unchecked(buffer) }
 }
 
-use sdl2::{video, VideoSubsystem};
-use crate::Window;
-use crate::math::{mat, rgba};
+pub fn clear(color: &RGBA) {
+    unsafe {
+        gl::ClearColor(color[0], color[1], color[2], color[3]);
+        gl::Clear(gl::COLOR_BUFFER_BIT);
+    }
+}
 

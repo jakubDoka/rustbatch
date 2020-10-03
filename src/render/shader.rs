@@ -66,10 +66,44 @@ impl Shader {
 
             uniform sampler2D sp;\n\n
 
-            void main(){\n
-            result_color = texture(sp, region) * color;\n
+            void main(){\n\
+                result_color = texture(sp, region) * color;\n\
             }").unwrap();
         Self::from_source(&frag, gl::FRAGMENT_SHADER).unwrap()
+    }
+
+    pub fn no_texture_fragment() -> Shader {
+        let frag: CString = CString::new("
+            #version 330 core\n
+
+            in vec4 color;\n
+
+            out vec4 result_color;\n\n
+
+            void main(){\n
+            result_color = color;\n
+            }").unwrap();
+        Self::from_source(&frag, gl::FRAGMENT_SHADER).unwrap()
+    }
+
+    pub fn no_texture_vertex() -> Shader {
+        let vert: CString = CString::new("
+            #version 330 core\n\n
+
+            layout (location = 0) in vec2 pos;\n
+            layout (location = 1) in vec4 col;\n\n
+
+            out vec4 color;\n\n
+
+            uniform mat4 camera;\n\
+            uniform vec2 view_size;\n\n
+
+            void main(){\n
+            gl_Position = camera * vec4(pos/view_size, 0.0, 1.0);\n
+            color = col;\n
+            }").unwrap();
+
+        Self::from_source(&vert, gl::VERTEX_SHADER).unwrap()
     }
 
     /// from_source compiles shader from provided cstring

@@ -4,7 +4,7 @@ use std::ops::Deref;
 
 use sdl2::{video, VideoSubsystem};
 
-use crate::math::{mat, rgba};
+use crate::math::rgba;
 use crate::math::mat::Mat;
 use crate::math::vect::Vect;
 use sdl2::video::GLContext;
@@ -65,7 +65,7 @@ impl Window {
         let video_subsystem = sdl.video().unwrap();
         let gl_attr = video_subsystem.gl_attr();
         gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
-        gl_attr.set_context_version(3, 3);
+        gl_attr.set_context_version(4, 0);
 
         let window = gen(&video_subsystem);
 
@@ -94,27 +94,33 @@ impl Window {
         let (w, h) = self.size();
 
         batch.program.set_camera(self.camera.transform_from_window_space((w, h)));
-        batch.program.set_view_size(Vect::u32(w, h));
-        batch.program.set_used();
-        batch.texture.set_used();
+        batch.program.set_view_size(vect!(w, h));
+        batch.program.bind();
+        batch.texture.bind();
 
-        self.buffer.set_vertices_and_indices(&batch.vertices, &batch.indices);
-        self.buffer.set_used();
-        self.buffer.draw(batch.indices.len());
+        let buff = match &batch.buffer {
+            Some(buff) => buff,
+            None => &self.buffer,
+        };
+
+        buff.set_vertices_and_indices(&batch.data.vertices, &batch.data.indices);
+        buff.bind();
+        buff.draw(batch.data.indices.len());
+
     }
 
     /// get_viewport_rect returns rectangle that whole screen fits in and that is even if you
     /// rotate camera. Useful when you don't want to draw sprites that are foo screen
     pub fn get_viewport_rect(&self) -> Rect {
-        let (mut w,mut h) = self.size();
+        let (w, h) = self.size();
         let w = w as i32 /2;
         let h = h as i32 /2;
 
         let mut corners: [Vect; 4] = [
-            Vect::i32(-w, -h),
-            Vect::i32(w, -h),
-            Vect::i32(w, h),
-            Vect::i32(-w, h),
+            vect!(-w, -h),
+            vect!(w, -h),
+            vect!(w, h),
+            vect!(-w, h),
         ];
 
         for i in 0..corners.len() {
@@ -146,14 +152,6 @@ impl Window {
     /// clear clears the window
     #[inline]
     pub fn clear(&self) {
-        unsafe {
-            gl::ClearColor(
-                self.background_color[0],
-                self.background_color[1],
-                self.background_color[2],
-                self.background_color[3],
-            );
-            gl::Clear(gl::COLOR_BUFFER_BIT);
-        }
+        super::clear(&self.background_color);
     }
 }

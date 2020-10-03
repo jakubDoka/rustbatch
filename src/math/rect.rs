@@ -1,7 +1,9 @@
-use crate::math::vect;
 use crate::math::vect::Vect;
 use std::mem;
 
+
+
+const R: Rect = rect!(10, 10, 10, 10);
 
 /// Rect is Rectangular shape or AABB for detecting collisions in 2D space
 #[derive(Copy, Clone, Debug)]
@@ -201,7 +203,7 @@ impl Rect {
     /// radius returns distance from rect center to max
     #[inline]
     pub fn radius(&self) -> f32 {
-        (self.max - self.max).len() / 2f32
+        (self.max - self.min).len() / 2f32
     }
 
     /// moved returns rectangle moved by delta
@@ -211,6 +213,11 @@ impl Rect {
             min: self.min + delta,
             max: self.max + delta,
         }
+    }
+
+    #[inline]
+    pub fn centered_to(&self, pos: Vect) -> Self {
+        Self::centered(pos, self.width(), self.height())
     }
 }
 

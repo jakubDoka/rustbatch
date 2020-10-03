@@ -1,8 +1,7 @@
 extern crate gl;
 
 use std;
-use std::ffi::{CStr, CString};
-use std::fs;
+use std::ffi::CString;
 
 use crate::math::mat::Mat;
 use crate::math::vect::Vect;
@@ -87,13 +86,20 @@ impl Program {
         ).unwrap()
     }
 
+    pub fn no_texture() -> Program {
+        Self::from_shaders(&[
+            Shader::no_texture_vertex(),
+            Shader::no_texture_fragment()
+        ]).unwrap()
+    }
+
     /// id returns id of program. its simply pointer to shader object
     pub fn id(&self) -> gl::types::GLuint {
         self.id
     }
 
-    /// set_used uses shader program
-    pub fn set_used(&self) {
+    /// bind uses shader program
+    pub fn bind(&self) {
         unsafe {
             gl::UseProgram(self.id);
         }
@@ -106,22 +112,22 @@ impl Program {
     }
 
     pub fn set_mat4(&self, address: &str, mat: Mat) {
-        self.set_used();
+        self.bind();
         unsafe { gl::UniformMatrix4fv(self.get_ptr(address), 1, gl::FALSE, &mat.to_glm_mat4().c0.x); }
     }
 
     pub fn set_vec2(&self ,address: &str, vec: Vect) {
-        self.set_used();
+        self.bind();
         unsafe { gl::Uniform2f(self.get_ptr(address), vec.x, vec.y); }
     }
 
     pub fn set_color(&self ,address: &str, col: &RGBA) {
-        self.set_used();
+        self.bind();
         unsafe { gl::Uniform4f(self.get_ptr(address), col[0], col[1], col[2], col[3]); }
     }
 
     pub fn set_float(&self, address: &str, value: f32) {
-        self.set_used();
+        self.bind();
         unsafe { gl::Uniform1f(self.get_ptr(address), value)}
     }
 

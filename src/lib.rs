@@ -27,7 +27,8 @@
 //!fn main() {
 //!    // creating window to draw to and event pump to read input. Ignore
 //!    // gl var, it cannot be dropped otherwise rendering will not work so just leave it be
-//!    use rustbatch::math::vect::Vect;
+//!
+//!    use rustbatch::render::texture::Config;
 //! let (mut window, mut event_pump, _gl, _sdl, _video_subsystem) = Window::new(|sys| {
 //!        sys.window("rusty batch", 400, 400)
 //!            .opengl()
@@ -41,8 +42,7 @@
 //!    // This is wrapped opengl texture object
 //!    let texture = Texture::new(
 //!        "C:/Users/jakub/Documents/programming/rust/src/rustbatch/assets/logo.png",
-//!        gl::NEAREST, // So the pixels are drawn with no interpolation
-//!        gl::RGBA // Color structure, you would use gl::RGB if your texture does not have alpha channel
+//!       Config::DEFAULT,
 //!    ).unwrap();
 //!
 //!    // Creating sprite. Notice that sprite is just collection of points and it cannot be directly
@@ -89,11 +89,48 @@
 //!}
 //! ```
 
+
+#[macro_export]
+macro_rules! vect {
+        ($x: expr, $y: expr) => {
+            Vect { x: $x as f32, y: $y as f32}
+        }
+    }
+
+#[macro_export]
+macro_rules! rect {
+        ($x: expr, $y: expr, $x1: expr, $y1: expr) => {
+            Rect{
+                min: Vect {
+                    x: $x as f32,
+                    y: $y as f32,
+                },
+                max: Vect {
+                    x: $x1 as f32,
+                    y: $y1 as f32,
+                },
+            }
+        }
+    }
+
+#[macro_export]
+macro_rules! curve {
+    ($ax: expr, $ay: expr; $ahx: expr, $ahy: expr; $bx: expr, $by: expr; $bhx: expr, $bhy: expr) => {
+        Curve {
+            a: Vect {x: $ax as f32, y: $ay as f32},
+            a_handle: Vect {x: $ahx as f32, y: $ahy as f32},
+            b: Vect {x: $bx as f32, y: $by as f32},
+            b_handle: Vect {x: $bhx as f32, y: $bhy as f32},
+            placeholder: false,
+        }
+    }
+}
+
 pub mod images;
-pub mod entity;
 pub mod render;
 pub mod debug;
 pub mod math;
+pub mod entity;
 
 pub use sdl2;
 pub use image;
@@ -103,6 +140,7 @@ pub use rand;
 pub use debug::FPS;
 pub use render::{window::Window, texture::Texture, sprite::Sprite, batch::Batch};
 pub use math::{mat::Mat, rgba::WHITE, vect::Vect};
+
 
 
 

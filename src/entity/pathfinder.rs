@@ -43,7 +43,7 @@ impl PathFinder {
     pub fn get_step(&self, current: (usize, usize)) -> (usize, usize) {
         let mut best = current;
         let mut lowest = i32::MAX;
-        let mut map = self.data.map.lock().unwrap();
+        let map = self.data.map.lock().unwrap();
         for d in D8.iter() {
             let pos = (current.0 as i32 + d.0, current.1 as i32 + d.1);
             if pos.0 < 0 || pos.1 < 0 || pos.0 == self.data.size.0 || pos.1 == self.data.size.1 {
@@ -66,7 +66,6 @@ impl PathFinder {
 
 
 pub struct Data {
-    costs: Vec<Vec<i32>>,
     pub map: Mutex<Vec<Vec<i32>>>,
     pub processor: Mutex<Processor>,
     size: (i32, i32),
@@ -76,7 +75,6 @@ impl Data {
     pub fn new(w: usize, h: usize, terminator: Receiver<()>, costs: &Vec<Vec<i32>>) -> Self {
         let map = vec![vec![INFINITY; w]; h];
         Self {
-            costs: map.clone(),
             map: Mutex::new(map.clone()),
             processor: Mutex::new(Processor {
                 terminator,
@@ -171,7 +169,6 @@ impl Processor {
 mod tests {
     use crate::entity::pathfinder::{Processor, Data};
     use std::sync::mpsc::channel;
-    use std::sync::Mutex;
 
     #[test]
     fn update_test() {

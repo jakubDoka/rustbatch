@@ -1,30 +1,5 @@
 use std::ops;
-use std::slice::Iter;
-use crate::math::{clamp, clamp_f};
-
-macro_rules! vec_from {
-    ($arg:ident) => {
-        handle!($arg);
-    };
-
-    ($arg:ident, $($args:ident),+) => (
-        handle!($arg);
-        vec_from!($($args),+);
-    );
-}
-
-macro_rules! handle {
-    ($arg:ident) => {
-        handle!($arg; $arg);
-    };
-
-    ($name:ident; $type:ty) => {
-        #[inline]
-        pub fn $name(x: $type, y: $type) -> Vect {
-            Vect{x: x as f32, y: y as f32}
-        }
-    };
-}
+use crate::math::clamp_f;
 
 /// Vect is 2D vector and is used all over the place. I choose to use f32 because
 /// opengl also accepts only f32
@@ -87,6 +62,10 @@ impl Vect{
     #[inline]
     pub fn clamped(&self, min: f32, max: f32) -> Self {
         Self::rad(self.ang(), clamp_f(self.len(), min, max))
+    }
+
+    pub fn lerp(self, o: Vect, t: f32) -> Vect {
+         o * t + self * (1.0 - t)
     }
 
     /// ang returns vectors angle
@@ -158,8 +137,6 @@ impl Vect{
     pub fn inverted(&self) -> Self {
         Self{x: -self.x, y: -self.y}
     }
-
-    vec_from!(u8, u16, u32, u64, i8, i16, i32, i64, i128, f64);
  }
 
 impl std::cmp::PartialEq for Vect {
