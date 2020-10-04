@@ -1,21 +1,18 @@
 extern crate sdl2;
 
 use std::ops::Deref;
-
 use sdl2::{video, VideoSubsystem};
-
-use crate::math::rgba;
 use crate::math::mat::Mat;
 use crate::math::vect::Vect;
 use sdl2::video::GLContext;
 use crate::render::buffer::Buffer;
-use crate::render::batch::Batch;
-use crate::math::rgba::RGBA;
+use crate::render::batch::Target;
 use self::sdl2::{EventPump, Sdl};
 use crate::math::rect::Rect;
 use crate::render::canvas::Canvas;
 use crate::render::texture::TextureSize;
-use crate::WHITE;
+use crate::{WHITE, Texture};
+use crate::render::program::Program;
 
 /// Window core feature of this library, everything starts here. Only after creating window you can
 /// safely use other parts of render module because window also calls gl::load_with() witch makes
@@ -51,13 +48,10 @@ impl Window {
     ///     .unwrap()
     /// });
     /// ```
-    pub fn new<F: FnOnce(&VideoSubsystem) -> video::Window>(gen: F) -> (Window, EventPump, GLContext, Sdl, VideoSubsystem) {
-        Self::from_buffer(gen, || Buffer::default())
-    }
 
     /// from_buffer creates window with custom buffer. Remember that changing vertex structure
     /// requires also batch with custom program
-    pub fn from_buffer<F, B>(gen: F, buffer: B) -> (Window, EventPump, GLContext, Sdl, VideoSubsystem)
+    pub fn new<F, B>(gen: F) -> (Window, EventPump, GLContext, Sdl, VideoSubsystem)
         where F: FnOnce(&VideoSubsystem) -> video::Window,
               B: FnOnce() -> Buffer  {
         let sdl = sdl2::init().expect("You probably did not set up your project correctly go to \
@@ -82,17 +76,13 @@ impl Window {
         (Window{canvas: Canvas::new(TextureSize::new(w as i32, h as i32)) ,window}, sdl.event_pump().unwrap(), gl, sdl, video_subsystem)
     }
 
-    pub fn render(&mut self) {
-        self.canvas.redraw(&Mat::IM, &WHITE);
-        self.canvas.render();
-    }
-
     /// update updates window, just call it at the end
     pub fn update(&mut self) {
         let size = self.size();
         if size != self.canvas.size() {
             self.canvas.resize(TextureSize::new(size.0 as i32, size.1 as i32))
         }
+        self.canvas.draw(&mut self.window, &Mat::IM, &WHITE);
         self.gl_swap_window();
     }
 
@@ -120,5 +110,37 @@ impl Window {
     #[inline]
     pub fn clear(&self) {
         self.canvas.clear();
+    }
+}
+
+impl Target for video::Window {
+    fn append(&mut self, data: &[f32], pattern: &[u32], _: u32, program: Option<&Program>, texture: Option<&Texture>, buffer: Option<&Buffer>) {
+        let (w, h) = self.size();
+
+        unsafe {
+            gl::Viewport(0, 0, w as i32, h as i32);
+        }
+
+        match program {
+            Some(p) => {
+                p.bind();
+                p.set_camera(Mat::IM);
+                p.set_view_size(vect!(w, h));
+            }
+            None => panic!("program mustn't be none when drawing to window"),
+        }
+
+        if let Some(t) = texture {
+            t.bind()
+        }
+
+        let buffer = match buffer {
+            Some(b) => b,
+            None => panic!("buffer mustn't be none when drawing to window"),
+        };
+
+        buffer.set_vertices_and_indices(data, pattern);
+        buffer.bind();
+        buffer.draw(pattern.len());
     }
 }

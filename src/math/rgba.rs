@@ -87,7 +87,7 @@ impl Graph {
     }
 
     #[inline]
-    pub fn get_color(&self, mut t: f32) -> RGBA {
+    pub fn get_color(&self, t: f32) -> RGBA {
 
         let mut idx = 0;
         for p in self.points.iter() {

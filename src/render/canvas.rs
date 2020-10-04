@@ -1,14 +1,15 @@
-use crate::{Texture, Sprite, Batch, Mat, Vect, WHITE};
+use crate::{Texture, Sprite, Mat, Vect};
 use crate::render::program::Program;
 use crate::render::buffer::Buffer;
-use crate::render::batch::Target;
-use std::ops::Deref;
+use crate::render::batch::{Target, VertexData};
 use crate::render::texture::{TextureSize, TextureConfig};
 use crate::math::rgba::{RGBA, BLACK};
 
 pub struct Canvas {
     framebuffer: gl::types::GLuint,
-    batch: Batch,
+    data: VertexData,
+    texture: Texture,
+    program: Program,
     buffer: Buffer,
     drawer: Sprite,
     pub(crate) camera: Mat,
@@ -16,20 +17,20 @@ pub struct Canvas {
 }
 
 impl Target for Canvas {
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, program: Option<&Program>, texture: Option<&Texture>, buffer: &Option<Buffer>) {
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, program: Option<&Program>, texture: Option<&Texture>, buffer: Option<&Buffer>) {
 
 
         self.bind();
 
         unsafe {
-            gl::Viewport(0, 0, self.batch.texture.w, self.batch.texture.h);
+            gl::Viewport(0, 0, self.texture.w, self.texture.h);
         }
 
         match program {
             Some(p) => {
                 p.bind();
-                p.set_camera(self.camera.transform_from_window_space((self.batch.texture.w, self.batch.texture.h)));
-                p.set_view_size(self.batch.texture.size());
+                p.set_camera(self.camera.transform_from_window_space((self.texture.w, self.texture.h)));
+                p.set_view_size(self.texture.size());
             }
             None => panic!("Program mustn't be None. If you are using sprite to draw directly to \
             canvas use batch instead. Using sprites to draw is fundamentally ineffective so i decided \
@@ -41,12 +42,12 @@ impl Target for Canvas {
         }
 
         let buffer = match buffer {
-            Some(t) => t,
+            Some(b) => b,
             None => {
                 if self.buffer.data_size as u32 != vertex_size {
-                    panic!("incorrect vertex size, this canvas accepts only vertex size {}, but \
+                        panic!("incorrect vertex size, this canvas accepts only vertex size {}, but \
               you inputted vertex data with vertex size {}", self.buffer.data_size, vertex_size);
-                }
+                    }
                 &self.buffer
             },
         };
@@ -67,34 +68,41 @@ impl Canvas {
         Self::customized(size, Buffer::default(), Program::default(), TextureConfig::DEFAULT)
     }
 
+    /// customizes allows greater customization of canvas
     pub fn customized(size: TextureSize, buffer: Buffer, program: Program, config: TextureConfig) -> Self {
         let mut framebuffer: gl::types::GLuint = 0;
+
         unsafe {
             gl::GenFramebuffers(1, &mut framebuffer);
             gl::BindFramebuffer(gl::FRAMEBUFFER, framebuffer);
         }
 
-        let tex = Texture::empty_texture(size, config);
+        let texture = Texture::empty_texture(size, config);
+        program.set_texture_size(texture.size());
+
         unsafe {
-            gl::FramebufferTexture2D(gl::FRAMEBUFFER, gl::COLOR_ATTACHMENT0, gl::TEXTURE_2D, tex.id(), 0);
+            gl::FramebufferTexture2D(gl::FRAMEBUFFER, gl::COLOR_ATTACHMENT0, gl::TEXTURE_2D, texture.id(), 0);
+            assert!(gl::CheckFramebufferStatus(gl::FRAMEBUFFER) == gl::FRAMEBUFFER_COMPLETE);
         }
-        assert!(unsafe {
-            gl::CheckFramebufferStatus(gl::FRAMEBUFFER) == gl::FRAMEBUFFER_COMPLETE
-        });
+
         Self::unbind();
+
         Self {
-            framebuffer,
-            drawer: Sprite::new(tex.frame()),
+
+            data: VertexData::custom(buffer.data_size as u32),
+            drawer: Sprite::new(texture.frame()),
             camera: Mat::IM,
-            batch: Batch::customized(tex, program, None),
-            buffer,
             background_color: BLACK,
+            framebuffer,
+            texture,
+            program,
+            buffer,
         }
     }
 
     #[inline]
     pub fn set_program(&mut self, program: Program) {
-        self.batch.program = program;
+        self.program = program;
     }
 
     #[inline]
@@ -102,13 +110,15 @@ impl Canvas {
         self.buffer = buffer;
     }
 
+    /// resize resizes canvas and erases its content
     #[inline]
     pub fn resize(&mut self, size: TextureSize) {
-        self.batch.texture.resize_and_clear(size);
-        self.batch.program.set_texture_size(self.batch.texture.size());
-        self.drawer = Sprite::new(self.batch.texture.frame());
+        self.texture.resize_and_clear(size);
+        self.program.set_texture_size(self.texture.size());
+        self.drawer = Sprite::new(self.texture.frame());
     }
 
+    /// bind binds the canvas so you can draw on it as you would on window
     #[inline]
     pub fn bind(&self) {
         unsafe {
@@ -116,6 +126,8 @@ impl Canvas {
         }
     }
 
+    /// unbind unbinds the current canvas. If you don't call this your draw calls will still affect
+    /// this canvas and not the widow.
     #[inline]
     pub fn unbind() {
         unsafe {
@@ -142,27 +154,10 @@ impl Canvas {
         self.camera = Mat::IM.moved(position.inverted()).scaled(Vect::ZERO, zoom);
     }
 
-    pub fn redraw(&mut self, transform: &Mat, color: &RGBA) {
-        self.batch.clear();
-        self.drawer.draw_with_matrix(&mut self.batch, transform, color);
-    }
-
-    pub fn render(&mut self) {
-        let (w, h) = self.size();
-
-        self.batch.program.set_camera(Mat::IM);
-        self.batch.program.set_view_size(vect!(w, h));
-        self.batch.program.bind();
-        self.batch.texture.bind();
-
-        self.buffer.set_vertices_and_indices(&self.batch.data.vertices, &self.batch.data.indices);
-        self.buffer.bind();
-        self.buffer.draw(self.batch.data.indices.len());
-    }
-
+    ///size returns current size of canvas
     #[inline]
     pub fn size(&self) -> (u32, u32){
-        (self.batch.texture.w as u32, self.batch.texture.h as u32)
+        (self.texture.w as u32, self.texture.h as u32)
     }
 
     /// clear clears the window
@@ -171,5 +166,12 @@ impl Canvas {
         self.bind();
         super::clear(&self.background_color);
         Self::unbind();
+    }
+
+    #[inline]
+    pub fn draw<T: Target>(&mut self, other: &mut T, mat: &Mat, color: &RGBA) {
+        self.data.clear();
+        self.drawer.draw_with_matrix(&mut self.data, mat, color);
+        other.append(&self.data.vertices, &self.data.indices, self.data.vertex_size, Some(&self.program), Some(&self.texture), Some(&self.buffer));
     }
 }

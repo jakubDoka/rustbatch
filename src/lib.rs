@@ -83,9 +83,6 @@
 //!        // after all drawing sprites to batch takes some time
 //!        batch.clear();
 //!
-//!        // render is convenience method that just renders canvas on screen
-//!        window.render();
-//!
 //!        // finishing with window update so you can se it changing
 //!        window.update();
 //!    }

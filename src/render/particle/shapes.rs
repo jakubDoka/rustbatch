@@ -54,7 +54,6 @@ use crate::render::particle::system::Particle;
 ///
 ///         batch.clear();
 ///
-///         window.render();
 ///         window.update();
 ///     }
 /// }
@@ -111,12 +110,44 @@ impl SymmetricShape {
             self.buffer.extend(outer_color);
         }
 
-        target.append(&self.buffer, &self.indices, 6, None, None, &None);
+        target.append(&self.buffer, &self.indices, 6, None, None, None);
     }
 }
 
 impl Particle for SymmetricShape {
     fn draw(&mut self, target: &mut VertexData, position: Vect, rotation: f32, scale: f32, color: &RGBA) {
         self.draw(target, &Mat::new(position,Vect::new(scale, scale), rotation), color, color);
+    }
+}
+
+pub struct Triangle {
+    points: [Vect; 3],
+    buff: [f32; 18],
+    pos: Vect,
+}
+
+impl Triangle {
+    pub const PATTERN: [u32; 3] = [0, 1, 2];
+
+    pub fn new(points: &[Vect; 3]) -> Self {
+        Self{ points: points.clone(), buff: [0f32; 18], pos: Vect::ZERO }
+    }
+
+    pub fn draw<T: Target>(&mut self, target: &mut T, transform: &Mat, color: &RGBA) {
+        for (mut i, pos) in self.points.iter().enumerate() {
+            self.pos = transform.prj(*pos);
+            i *= 6;
+            self.buff[i+0] = self.pos.x;
+            self.buff[i+1] = self.pos.y;
+            self.buff[i+2..i+6].copy_from_slice(color);
+        }
+
+        target.append(&self.buff, &Self::PATTERN, 6, None, None, None);
+    }
+}
+
+impl Particle for Triangle {
+    fn draw(&mut self, target: &mut VertexData, position: Vect, rotation: f32, scale: f32, color: &RGBA) {
+        self.draw(target, &Mat::new(position, Vect::new(scale, scale), rotation), color);
     }
 }

@@ -3,7 +3,7 @@ use crate::render::texture::Texture;
 use crate::render::buffer::Buffer;
 
 pub trait Target {
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, program: Option<&Program>, texture: Option<&Texture>, buffer: &Option<Buffer>);
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, program: Option<&Program>, texture: Option<&Texture>, buffer: Option<&Buffer>);
 }
 
 pub struct VertexData {
@@ -33,7 +33,7 @@ impl VertexData {
     }
 
     pub fn draw<T: Target>(&self, target: &mut T) {
-        target.append(&self.vertices, &self.indices, self.vertex_size, None, None, &None);
+        target.append(&self.vertices, &self.indices, self.vertex_size, None, None, None);
     }
 
     pub fn clear(&mut self) {
@@ -44,7 +44,7 @@ impl VertexData {
 
 impl Target for VertexData {
     #[inline]
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, _: Option<&Program>, _: Option<&Texture>, _: &Option<Buffer>) {
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, _: Option<&Program>, _: Option<&Texture>, _: Option<&Buffer>) {
         self.error_check(vertex_size);
 
         let offset = self.vertices.len() as u32/ vertex_size;
@@ -101,7 +101,11 @@ impl Batch {
     }
 
     pub fn draw<T: Target>(&self, target: &mut T) {
-        target.append(&self.data.vertices, &self.data.indices, self.data.vertex_size, Some(&self.program), Some(&self.texture), &self.buffer)
+        let buffer = match &self.buffer {
+            Some(b) => Some(b),
+            None => None,
+        };
+        target.append(&self.data.vertices, &self.data.indices, self.data.vertex_size, Some(&self.program), Some(&self.texture), buffer)
     }
 
     /// clear clears batch
@@ -124,7 +128,7 @@ impl Target for Batch {
     /// panic. This is mainly to prevent confusion in case of providing incorrect vertex data
     /// structure.
     #[inline]
-    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, _: Option<&Program>, _: Option<&Texture>, _: &Option<Buffer>) {
-        self.data.append(data, pattern, vertex_size, None, None, &None);
+    fn append(&mut self, data: &[f32], pattern: &[u32], vertex_size: u32, _: Option<&Program>, _: Option<&Texture>, _: Option<&Buffer>) {
+        self.data.append(data, pattern, vertex_size, None, None, None);
     }
 }

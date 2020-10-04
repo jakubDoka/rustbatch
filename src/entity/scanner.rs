@@ -21,7 +21,8 @@ impl<T: Hash + Eq + Copy + Clone> Scanner<T> {
 
     #[inline]
     pub fn get_coord(&self, pos: Vect) -> (usize, usize) {
-        (clamp((pos.x / self.tile_size.x) as usize, 0, self.w-1), clamp((pos.y/self.tile_size.y) as usize, 0, self.h-1))
+        (clamp((pos.x / self.tile_size.x) as usize, 0, self.w-1),
+         clamp((pos.y/self.tile_size.y) as usize, 0, self.h-1))
     }
 
     #[inline]

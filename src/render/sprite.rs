@@ -5,7 +5,6 @@ use crate::render::buffer;
 use crate::render::batch::{Target, VertexData};
 use crate::math::rgba::RGBA;
 use crate::render::particle::system::Particle;
-use crate::Batch;
 
 /// Sprite is used for drawing images to batch
 /// It does not contain any heavy image data.
@@ -75,7 +74,7 @@ impl Sprite {
     #[inline]
     pub fn draw_with_matrix<T: Target>(&mut self, target: &mut T, mat: &Mat, color: &RGBA) {
         self.update_trig_data(mat, color);
-        target.append(&self.trig_data, &Self::PATTERN, buffer::DEFAULT_VERTEX_SIZE, None, None, &None);
+        target.append(&self.trig_data, &Self::PATTERN, buffer::DEFAULT_VERTEX_SIZE, None, None, None);
     }
 
     /// draw "draws" texture to to batch

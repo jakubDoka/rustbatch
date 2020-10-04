@@ -3,8 +3,6 @@ use std::mem;
 
 
 
-const R: Rect = rect!(10, 10, 10, 10);
-
 /// Rect is Rectangular shape or AABB for detecting collisions in 2D space
 #[derive(Copy, Clone, Debug)]
 pub struct Rect {

@@ -1,13 +1,9 @@
 use crate::math::curve::Curve;
-use crate::{Batch, Mat, Vect, Sprite, WHITE};
+use crate::{ Vect, Sprite};
 use crate::render::batch::{Target, VertexData};
 use crate::math::rgba::{RGBA, Graph};
-use std::sync::{Arc, Mutex};
-use std::thread;
-use crate::render::create_whitespace_cstring_with_len;
 use rand::Rng;
 use rand::rngs::ThreadRng;
-use std::intrinsics::transmute;
 
 #[inline]
 pub fn in_range(random: &mut ThreadRng , min: f32, max:f32) -> f32 {
@@ -152,7 +148,8 @@ impl Inner {
 /// use rustbatch::math::rgba::{Graph, GraphPoint};
 /// use std::f32::consts::PI;
 /// use rustbatch::math::curve::Curve;
-/// use rustbatch::render::particle::shapes::SymmetricShape;
+/// use rustbatch::render::particle::shapes::{SymmetricShape, Triangle};
+/// use rustbatch::vect;
 ///
 /// let (mut window, mut pump, _f, _g, _r) = Window::new(|sys| sys.window("segmentation", 400, 400).opengl().build().unwrap());
 ///     let mut batch = Batch::no_texture();
@@ -177,7 +174,7 @@ impl Inner {
 ///             twerk_acceleration: Property { curve: Curve::NONE, value: 0.0 },
 ///             scale: Property { curve: Curve::NONE, value: 20.0 }
 ///         }
-///     }, Box::new(SymmetricShape::new(3, 0.0)));
+///     }, Box::new(Triangle::new(&[Vect::unit(0.0), Vect::unit(2.0 * PI/3.0), Vect::unit(4.0 * PI/3.0)])));
 ///
 ///     let mut fps = FPS::new(1f32);
 ///     'main: loop {
@@ -206,7 +203,6 @@ impl Inner {
 ///
 ///         batch.clear();
 ///
-///         window.render();
 ///         window.update();
 ///
 ///     }
@@ -286,7 +282,7 @@ impl ParticleSystem {
 
     #[inline]
     pub fn draw<T: Target>(&self, target: &mut T) {
-        target.append(&self.vertex_data.vertices, &self.vertex_data.indices, self.vertex_data.vertex_size, None, None, &None)
+        target.append(&self.vertex_data.vertices, &self.vertex_data.indices, self.vertex_data.vertex_size, None, None, None)
     }
 
     #[inline]

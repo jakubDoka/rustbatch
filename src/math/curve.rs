@@ -31,7 +31,7 @@ impl Curve {
             return Vect::UP;
         }
 
-        let omt = (1.0 - t);
+        let omt = 1.0 - t;
 
         self.a * (omt * omt * omt) + self.a_handle * (omt * omt * t * 3.0) + self.b_handle * (omt * t * t * 3.0) + self.b * (t * t * t)
     }
